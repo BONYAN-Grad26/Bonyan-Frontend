@@ -83,3 +83,35 @@ export const getAllAllergies= async() : Promise<Allergy[]> => {
             }
         }) 
 }
+
+export const deleteAllergy = async (id:string) => {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get('access_token')?.value;
+
+    if(!accessToken) {
+        throw new Error("Access token not found");
+    }
+    try {
+        const response = await apiClient.delete(`allergy/${id}`,{
+            headers :{
+                'Authorization':`Bearer ${accessToken}`
+            }
+        })
+        const resposeData = response.data as ResponseData ;
+        revalidateTag('allergies',"max")
+        
+
+
+
+    } catch(error:any) {
+        console.error(error)
+        if(!axios.isAxiosError(error)) {
+            const data = error.response?.data as ResponseData ;
+            throw new Error(data.error.message || "Request failed");
+
+
+        }
+        throw new Error(error.message || "something went wrong!")
+
+    }
+}

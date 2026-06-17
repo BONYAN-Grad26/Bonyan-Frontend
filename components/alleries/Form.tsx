@@ -13,7 +13,7 @@ interface AllergyFormProps  {
 
 export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
     const [loading,setLoading] = useState(false);
-    const router = useRouter();
+    //const router = useRouter();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -49,7 +49,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
       setLoading(true);
       await createAllergy(newAllergy)
       toast.success("Allergy is added successfully!")
-      router.refresh();
+      //router.refresh();
       setAllergies([newAllergy, ...allergies]);
 
 
@@ -138,7 +138,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
               <button
                 disabled={loading}
                 type="submit"
-                className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl shadow-sm transition-colors text-sm flex items-center justify-center gap-2 mt-2"
+                className={`w-full py-3 ${loading? "bg-slate-500":"bg-slate-900"}  hover:bg-slate-800 text-white font-medium rounded-xl shadow-sm transition-colors text-sm flex items-center justify-center gap-2 mt-2`}
               >
                 <Plus size={18} />
                 Save Allergy

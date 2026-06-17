@@ -4,12 +4,13 @@ import { AllergyCard } from '@/components/alleries/AllergyCard';
 import { Allergy } from '@/lib/interfaces';
 import ClientAllergy from '@/components/alleries/ClientAllergy';
 import { getAllAllergies } from '@/serverActions/allergy';
+import { staticAllergies } from '@/lib/constants';
 
 
 
 export default async function AllergiesPage() {
 
-  const allergies = await getAllAllergies() ;
+  //const allergies = await getAllAllergies() ;
 
 
 
@@ -34,7 +35,7 @@ export default async function AllergiesPage() {
           </div>
         </div>
         
-        <ClientAllergy allergies2={allergies} />
+        <ClientAllergy allergies2={staticAllergies} />
 
 
       </div>

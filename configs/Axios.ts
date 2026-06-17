@@ -3,5 +3,5 @@ import axios from 'axios';
 
 export const apiClient = axios.create({
   baseURL: baseUrl, // Base URL 
-// Set base timeout for requests (optional)
+
 }); 
