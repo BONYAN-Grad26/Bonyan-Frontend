@@ -4,7 +4,7 @@ import { baseUrl } from "@/lib/constants";
 import { Allergy, AllergyFromServer, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidateTag } from "next/cache";
-import { cookies, headers } from "next/headers";
+import { cookies} from "next/headers";
 
 
 export const createAllergy = async(allergy:Allergy) => {
@@ -28,7 +28,9 @@ export const createAllergy = async(allergy:Allergy) => {
         } 
 
     );
-    const responseData = response.data as ResponseData;
+    //const responseData = response.data as ResponseData;
+    revalidateTag('allergies',"max")
+
 
 
     } catch (error:any) {
@@ -47,14 +49,13 @@ export const createAllergy = async(allergy:Allergy) => {
 
 }
 
-export const getAllAllergies= async() => {
+export const getAllAllergies= async() : Promise<Allergy[]> => {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('access_token')?.value;
 
     if(!accessToken) {
         throw new Error("Access token not found");
     }
-    try {
         const response = await fetch(`${baseUrl}/allergy/user`, {
             method: 'GET',
             headers: {
@@ -65,7 +66,7 @@ export const getAllAllergies= async() => {
             
         }) ;
         if (!response.ok) {
-            throw new Error(`Error fetching user profile: ${response.statusText}`);
+            throw new Error(`Error fetching user allergies: ${response.statusText}`);
         }
         const responseData = await response.json() as ResponseData  ;
         let alleries = responseData.data as AllergyFromServer[] ;
@@ -79,17 +80,6 @@ export const getAllAllergies= async() => {
                 severity:"high",
                 id:allergy.id.toString()
 
-                
-
             }
         }) 
-
-        
-
-
-
-    }catch(error:any) {
-        console.error(error);
-        throw new Error(`Error fetching user allergies: ${error}`);
-    }
 }

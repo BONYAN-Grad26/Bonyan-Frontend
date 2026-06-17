@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-const protectedRoutes = ['/dashboard','/meals','/profile','/settings','/workouts','/onboarding'];
+const protectedRoutes = ['/dashboard','/meals','/profile','/settings','/workouts','/onboarding','alleries'];
 
 export async function middleware(request:NextRequest) {
-    /*
+    
     const token = request.cookies.get('access_token')?.value;
     const pathname = request.nextUrl.pathname;
 
@@ -23,7 +23,7 @@ export async function middleware(request:NextRequest) {
 
     }
     return NextResponse.next();
-    */
+    
     
 
 
@@ -42,5 +42,6 @@ export const config = {
         '/profile/:path*',
         '/settings/:path*',
         '/workouts/:path*',
+        '/alleries/:path*'
     ],
 }

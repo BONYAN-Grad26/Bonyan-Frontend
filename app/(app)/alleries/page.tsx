@@ -1,5 +1,3 @@
-"use client"
-import React, { useState } from 'react';
 import { ShieldAlert, Plus, Trash2, Info, Egg, ShieldAlert as MedicineIcon, Leaf, Form } from 'lucide-react';
 import { AllergyForm } from '@/components/alleries/Form';
 import { AllergyCard } from '@/components/alleries/AllergyCard';

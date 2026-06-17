@@ -119,9 +119,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
 
 
     } catch (error) { 
-
-
-
+        console.error(error);
         const errorMessage = axios.isAxiosError(error) ? error.response?.data?.message : null;
         
         throw new Error(errorMessage || 'An error occurred during creating health-matrix');
