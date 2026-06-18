@@ -1,7 +1,8 @@
-import { Allergy } from "./interfaces";
+import { ActivityLevel, Allergy } from "./interfaces";
 import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban} from 'lucide-react';
 
 export const baseUrl = process.env.BASE_URL || 'http://localhost:8080/api';
+
 export const staticAllergies : Allergy[] = [
     { id: '1', name: 'Penicillin', type: 'medicine', severity: 'high', notes: 'Causes severe skin rash and shortness of breath.' },
     { id: '2', name: 'Peanuts', type: 'food', severity: 'high', notes: 'Anaphylaxis risk - requires immediate Epinephrine auto-injector.' },
@@ -23,3 +24,4 @@ export const navItems = [
   { label: 'Settings', href: '/settings', icon: Settings },
   {label :"Alleries", href:'/alleries' , icon: Ban }
 ];
+
