@@ -1,7 +1,7 @@
 "use server";
 import { apiClient } from "@/configs/Axios"
 import { baseUrl } from "@/lib/constants";
-import { Allergy, AllergyFromServer, ResponseData } from "@/lib/interfaces";
+import { AllergenType, Allergy, AllergyFromServer, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidateTag } from "next/cache";
 import { cookies} from "next/headers";
@@ -15,6 +15,7 @@ export const createAllergy = async(allergy:Allergy) => {
         throw new Error("Access token not found");
     }
     try {
+        console.log({allergy});
         const response = await apiClient.post("/allergy" ,{
             name:allergy.name,
             description: allergy.notes,
@@ -34,8 +35,8 @@ export const createAllergy = async(allergy:Allergy) => {
 
 
     } catch (error:any) {
-        console.error(error)
-        if(!axios.isAxiosError(error)) {
+        console.error(error.response?.data);
+        if(axios.isAxiosError(error)) {
             const data = error.response?.data as ResponseData ;
             throw new Error(data.error.message || "Request failed");
 
@@ -76,7 +77,7 @@ export const getAllAllergies= async() : Promise<Allergy[]> => {
             return {
                 name:allergy.name,
                 notes:allergy.description,
-                type:allergy.type as "food" | "medicine" | "environmental" | "other",
+                type:allergy.type as AllergenType,
                 severity:"high",
                 id:allergy.id.toString()
 

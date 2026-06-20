@@ -1,7 +1,8 @@
 "use client"
-import { Allergy } from '@/lib/interfaces'
+import { AllergenType, Allergy } from '@/lib/interfaces'
 import { createAllergy } from '@/serverActions/allergy'
 import { Plus } from 'lucide-react'
+import { Allan } from 'next/font/google'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import {toast} from "react-hot-toast"
@@ -13,11 +14,11 @@ interface AllergyFormProps  {
 
 export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
     const [loading,setLoading] = useState(false);
-    //const router = useRouter();
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         name: '',
-        type: 'food',
+        type: AllergenType.CRUSTACEAN,
         severity: 'low',
         notes: ''
     });
@@ -40,7 +41,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
     const newAllergy: Allergy = {
       id: Date.now().toString(),
       name: formData.name,
-      type: formData.type as any,
+      type: formData.type  as AllergenType ,
       severity: formData.severity as any,
       notes: formData.notes
     };
@@ -49,7 +50,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
       setLoading(true);
       await createAllergy(newAllergy)
       toast.success("Allergy is added successfully!")
-      //router.refresh();
+      router.refresh();
       setAllergies([newAllergy, ...allergies]);
 
 
@@ -84,16 +85,28 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
               {/* Allergy Type Selector */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Allergy Type</label>
-                <select
-                  value={formData.type}
-                  onChange={(e) => setFormData({...formData, type: e.target.value})}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm"
-                >
-                  <option value="food">Food Allergy</option>
-                  <option value="medicine">Medication / Drug</option>
-                  <option value="environmental">Environmental (Pollen, Dust)</option>
-                  <option value="other">Other</option>
-                </select>
+<select
+  value={formData.type}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      type: e.target.value as AllergenType
+    })
+  }
+  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm"
+>
+  <option value="GLUTEN">Gluten</option>
+  <option value="LUPIN">Lupin</option>
+  <option value="CRUSTACEAN">Crustacean</option>
+  <option value="EGG">Egg</option>
+  <option value="FISH">Fish</option>
+  <option value="MICE">Mice</option>
+  <option value="SHELLFISH">Shellfish</option>
+  <option value="SOY">Soy</option>
+  <option value="WHEAT">Wheat</option>
+  <option value="NUTS">Nuts</option>
+  <option value="OTHER">Other</option>
+</select>
               </div>
 
               {/* Severity Level (Custom Styled Radio) */}
@@ -126,6 +139,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Symptoms or Emergency Notes</label>
                 <textarea
+                  required
                   rows={3}
                   placeholder="Describe your reaction or any required first-aid steps..."
                   value={formData.notes}

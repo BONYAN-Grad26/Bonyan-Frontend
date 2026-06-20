@@ -10,10 +10,11 @@ export const registerUser = async (userData: RegisterUserData) : Promise<Respons
         const response = await  apiClient.post('/auth/register', userData);
         return response.data;
 
-    } catch (error) {
-        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.message : null;
+    } catch (error:any) {
+        console.error(error.response?.data);
+        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
         
-        throw new Error(errorMessage || 'An error occurred during login');
+        throw new Error(errorMessage || 'An error occurred during resgister');
     }
 }
 export const sendOtp = async (otp:string,email:string) => {
@@ -39,7 +40,7 @@ export const sendOtp = async (otp:string,email:string) => {
     } catch (error) {
         console.error("Error during otp:", error);
 
-        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.message : null;
+        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
         
         throw new Error(errorMessage || 'An error occurred during sending OTP');
     }
@@ -70,7 +71,7 @@ export const loginUser = async (email:string,password:string) => {
     } catch (error) {
         console.error("Error during login:", error);
 
-        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.message : null;
+        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
         
         throw new Error(errorMessage || 'An error occurred during login');
     }
@@ -120,7 +121,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
 
     } catch (error) { 
         console.error(error);
-        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.message : null;
+        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
         
         throw new Error(errorMessage || 'An error occurred during creating health-matrix');
     }
@@ -131,7 +132,7 @@ const calcSeconds = (expires_in: string): number => {
     const startTime = new Date(expires_in);
     const endTime = new Date();
 
-    const diffInSeconds = Math.floor(Math.abs((endTime.getTime() - startTime.getTime())) / 1000);
+    const diffInSeconds = Math.floor(endTime.getTime() - startTime.getTime()) / 1000;
 
     return diffInSeconds;
 

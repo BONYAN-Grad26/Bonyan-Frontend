@@ -133,7 +133,7 @@ export interface HealthProfileData {
 export interface Allergy {
   id: string;
   name: string;
-  type: 'food' | 'medicine' | 'environmental' | 'other';
+  type: AllergenType;
   severity: 'low' | 'medium' | 'high';
   notes: string;
 }
@@ -151,3 +151,64 @@ export interface AllergyFromServer {
 
 
 
+export enum AllergenType {
+    GLUTEN = "GLUTEN",
+    LUPIN = "LUPIN",
+    CRUSTACEAN = "CRUSTACEAN",
+    EGG = "EGG",
+    FISH = "FISH",
+    MICE = "MICE",
+    SHELLFISH = "SHELLFISH",
+    SOY = "SOY",
+    WHEAT = "WHEAT",
+    NUTS = "NUTS",
+    OTHER = "OTHER"
+}
+
+
+export interface Ingredient {
+  ingredientId: number;
+  ingredientName: string;
+  quantity: number;
+  measurementUnit: string;
+}
+
+export interface Meal {
+  id: number;
+  name: string;
+  mealType: string;
+  description: string;
+  preparationTime: number;
+  preparationInstructions: string;
+  order: number;
+  ingredients: Array<Ingredient>;
+}
+
+export interface NutritionData {
+  id: number;
+  date: string;
+  dayOfWeek: number;
+  targetCalories: number;
+  targetProtein: number;
+  targetCarbs: number;
+  targetFat: number;
+  targetFiber: number;
+  targetSugar: number;
+  waterGoal: number;
+  aiDailyTips: string;
+  meals: Array<Meal>;
+}
+
+export interface Exercise {
+  name: string;
+  sets: number;
+  reps: string;
+  rest_seconds: number;
+  notes: string;
+}
+
+export interface WorkoutData {
+  session: string;
+  focus: string;
+  exercises: Array<Exercise>;
+}

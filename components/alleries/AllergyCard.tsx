@@ -5,6 +5,7 @@ import { ShieldAlert, Plus, Trash2, Info, Egg, ShieldAlert as MedicineIcon, Leaf
 import {toast} from 'react-hot-toast'
 import { deleteAllergy } from '@/serverActions/allergy';
 import { getSeverityBadge } from '@/lib/constants';
+import { useRouter } from 'next/navigation';
 interface AllergyCardProps {
   allergy: Allergy;
   key:number ;
@@ -13,6 +14,7 @@ interface AllergyCardProps {
 
 
 export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
+    const router = useRouter();
 
 
 
@@ -20,6 +22,7 @@ export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
       try {
         await deleteAllergy(id)
         toast.success("Allergy is deleted successfully!")
+        router.refresh();
         setAllergies((allergies) => allergies.filter(item => item.id !== id));
 
       } catch(error:any) {

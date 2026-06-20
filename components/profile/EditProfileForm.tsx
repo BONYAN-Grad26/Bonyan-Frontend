@@ -13,7 +13,7 @@ const EditProfileForm = ({id,user}:{id:string,user:HealthProfileData }) => {
   const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState<HealthData>({
-    age: user.age,
+    age: user.age ,
     weightKg: user.weightKg,
     heightCm: user.heightCm,
     muscleMassKg: user.muscleMassKg,
@@ -47,8 +47,15 @@ const EditProfileForm = ({id,user}:{id:string,user:HealthProfileData }) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
+        if(formData.age<15 || formData.age > 120) {
+          toast.error("Please enter valid age between 15 and 120 ");
+          return;
+        }
+        
         try {
           const message = await editProfile(id,formData);
+          router.refresh();
+
           toast.success(message || 'Profile is updated successfully !')
 
 
@@ -70,7 +77,7 @@ const EditProfileForm = ({id,user}:{id:string,user:HealthProfileData }) => {
         {/* Age */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Age</label>
-          <input disabled={loading} type="number" name="age" value={formData.age} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" required />
+          <input min={15}  max={120} disabled={loading} type="number" name="age" value={formData.age} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" required />
         </div>
 
         {/* Gender */}
@@ -86,12 +93,12 @@ const EditProfileForm = ({id,user}:{id:string,user:HealthProfileData }) => {
         {/* Weight & Height */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Weight (kg)</label>
-          <input disabled={loading} type="number" step="0.1" name="weightKg" value={formData.weightKg} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
+          <input min={50} disabled={loading} type="number" step="0.1" name="weightKg" value={formData.weightKg} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Height (cm)</label>
-          <input disabled={loading} type="number" step="0.1" name="heightCm" value={formData.heightCm} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
+          <input min={50} disabled={loading} type="number" step="0.1" name="heightCm" value={formData.heightCm} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
         </div>
 
         {/* Muscle Mass & Fat Percentage */}
@@ -141,12 +148,12 @@ const EditProfileForm = ({id,user}:{id:string,user:HealthProfileData }) => {
         {/* Target Weight & Calorie Target */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Target Weight (kg)</label>
-          <input disabled={loading} type="number" step="0.1" name="targetWeightKg" value={formData.targetWeightKg} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
+          <input min={50} disabled={loading} type="number" step="0.1" name="targetWeightKg" value={formData.targetWeightKg} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Daily Calorie Target</label>
-          <input disabled={loading} type="number" name="dailyCalorieTarget" value={formData.dailyCalorieTarget} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
+          <input min={1000} disabled={loading} type="number" name="dailyCalorieTarget" value={formData.dailyCalorieTarget} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
         </div>
 
         {/* Medical Notes */}
