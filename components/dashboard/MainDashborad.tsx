@@ -1,62 +1,76 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Meal, NutritionData, WorkoutData } from '@/lib/interfaces';
-import { defaultNutrition, defaultWorkout, macros } from '@/lib/constants';
 import MealComponent from '@/components/dashboard/Meal';
 import Workout from '@/components/dashboard/Workout';
 import Nutrition from '@/components/dashboard/Nutrition';
 import AidailyTaps from '@/components/dashboard/AidailyTaps';
-import { useState } from 'react';
 import Header from '@/components/dashboard/Header';
+import { defaultNutrition } from '@/lib/constants';
 
-interface MainDashboradProps {
-  nutrition:NutritionData | null,
-  workout:WorkoutData | null
-
+interface MainDashboardProps {
+  nutrition: NutritionData | null;
+  workout: WorkoutData | null;
 }
-const MainDashborad = ({nutrition,workout}:MainDashboradProps) => {
 
-
-    const [selectedMeal,setSelectedMeal] = useState<Meal | null> (null)
-  
-    const [activeTab, setActiveTab] = useState<'nutrition' | 'workout'>('nutrition');
-
+const MainDashboard = ({ nutrition, workout }: MainDashboardProps) => {
+  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  const [activeTab, setActiveTab] = useState<'nutrition' | 'workout'>('nutrition');
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 p-4 md:p-8 font-sans antialiased selection:bg-emerald-100">
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* --- HEADER --- */}
-        <Header nutrition={nutrition!} activeTab={activeTab} setActiveTab={setActiveTab} />
+          <Header nutrition={nutrition || defaultNutrition} activeTab={activeTab} setActiveTab={setActiveTab} />
 
 
         {/* --- AI ADVISORY BANNER --- */}
-        {nutrition!.aiDailyTips && (
-          <AidailyTaps aiDailyTips={defaultNutrition.aiDailyTips} />
-
+        {nutrition?.aiDailyTips && (
+          <AidailyTaps aiDailyTips={nutrition.aiDailyTips} />
         )}
 
         {/* ==================== NUTRITION TAB ==================== */}
         {activeTab === 'nutrition' && (
-          <Nutrition nutrition={nutrition!} setSelectedMeal={setSelectedMeal} />
-
+          nutrition ? (
+            <Nutrition nutrition={nutrition} setSelectedMeal={setSelectedMeal} />
+          ) : (
+            /* Fallback UI when nutrition is null */
+            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-center space-y-3">
+              <div className="text-4xl animate-bounce">🍎</div>
+              <h3 className="text-lg font-semibold text-slate-700">No Nutrition Plan Today</h3>
+              <p className="text-sm text-slate-400 max-w-sm mx-auto">
+                No meals or macros have been tracked or assigned for today yet. Try adding a custom meal or wait for your plan update.
+              </p>
+            </div>
+          )
         )}
 
         {/* ==================== WORKOUT TAB ==================== */}
         {activeTab === 'workout' && (
-          <Workout workout={workout!} />
-
+          workout ? (
+            <Workout workout={workout} />
+          ) : (
+            /* Fallback UI when workout is null */
+            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 shadow-sm text-center space-y-3">
+              <div className="text-4xl animate-pulse">💪</div>
+              <h3 className="text-lg font-semibold text-slate-700">Rest Day!</h3>
+              <p className="text-sm text-slate-400 max-w-sm mx-auto">
+                No workouts are scheduled for today. Take this time to recover, hydrate, and let your muscles rebuild.
+              </p>
+            </div>
+          )
         )}
 
         {/* ==================== MEAL DETAIL MODAL ==================== */}
         {selectedMeal && (
-          <MealComponent  selectedMeal={selectedMeal} setSelectedMeal={setSelectedMeal} />
-
+          <MealComponent selectedMeal={selectedMeal} setSelectedMeal={setSelectedMeal} />
         )}
 
       </div>
-    </div>  )
+    </div>
+  )
 }
 
-export default MainDashborad
+export default MainDashboard;

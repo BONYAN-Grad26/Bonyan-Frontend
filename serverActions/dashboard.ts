@@ -3,7 +3,8 @@ import { apiClient } from "@/configs/Axios"
 import { baseUrl } from "@/lib/constants";
 import { NutritionData, ResponseData, WorkoutData } from "@/lib/interfaces";
 import axios from "axios";
-import { cookies } from "next/headers";
+import { revalidateTag, updateTag } from "next/cache";
+import { cookies, headers } from "next/headers";
 
 
 export const getNutrition = async () => {
@@ -15,13 +16,15 @@ export const getNutrition = async () => {
     }
     console.log({accessToken})
 
-    const response = await fetch(`${baseUrl}/deit-plan/today`,{
+    const response = await fetch(`${baseUrl}/diet-plan/today`,{
         method:'GET',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
         },
-        next: { tags: ['deit-plan'] ,revalidate: 60 } // Optional: for caching and revalidation
+        cache:"force-cache",
+        next:{
+            tags:['diet-plans']
+        }
             
     });
     if(response.status===404) {
@@ -49,13 +52,16 @@ export const getWorkout = async () => {
         throw new Error("Access token not found");
     }
 
-    const response = await fetch(`${baseUrl}/workout-plan/today`,{
+    const response = await fetch(`http://localhost:8080/workout-plan/today`,{
         method:'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
         },
-        next: { tags: ['workout-plan'] ,revalidate: 60 } // Optional: for caching and revalidation
+        cache:"force-cache",
+        next:{
+            tags:['workout-plans']
+        }
             
     });
     if(response.status===404) {
@@ -82,12 +88,21 @@ export const generateWorkout = async()=> {
         throw new Error("Access token not found");
     }
     try {
-        const response = await apiClient.post("/workout-plan/generate-weekly");
+        const response = await axios.post("http://localhost:8080/workout-plan/generate-weekly",null,{
+            headers:{
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
         const responseData = response.data as ResponseData ;
+        updateTag('workout-plans')
+
+
         return responseData.data ;
         
 
     } catch(error:any) {
+        console.error(error);
+
         if(axios.isAxiosError(error)) {
             const message = error.response?.data.error.message ;
             throw new Error(message || "something went wrong in server");
@@ -106,8 +121,17 @@ export const generateNutrition = async()=> {
         throw new Error("Access token not found");
     }
     try {
-        const response = await apiClient.post("/deit-plan/generate-weekly");
+        const response = await apiClient.post(`/diet-plan/generate-weekly`,null , {
+            headers:{
+                'Authorization': `Bearer ${accessToken}`
+            },
+            params: {
+                startDate: new Date().toISOString().split('T')[0],
+                weekNumber: 1,
+            },
+        });
         const responseData = response.data as ResponseData ;
+        updateTag('diet-plans')
         return responseData.data ;
         
 
@@ -122,3 +146,4 @@ export const generateNutrition = async()=> {
 
 
 }
+

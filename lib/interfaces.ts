@@ -217,3 +217,57 @@ export interface Ingredient {
   id: number;
   name: string;
 }
+
+export interface MachineData {
+  "label": string,
+  "confidence": number,
+  "video_url": string
+}
+
+export interface IngredientData {
+  ingredientId: number;
+  ingredientName: string;
+  quantity: number;
+  measurementUnit: string; // مثل "g" أو "ml" إلخ
+}
+
+export interface Meal {
+  id: number;
+  name: string;
+  mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK' | string; 
+  description: string; 
+  order: number;
+  preparationInstructions: string ;
+  preparationTime: number ;
+  ingredients: IngredientData[];
+}
+
+export interface DayPlan {
+
+  id: number;
+  date: string;                     // صيغة تاريخ "YYYY-MM-DD"
+  dayOfWeek: number;                // int32 يمثل ترتيب اليوم
+  targetCalories: number;           // double
+  targetProtein: number;            // double
+  targetCarbs: number;              // double
+  targetFat: number;                // double
+  targetFiber: number;              // double
+  targetSugar: number;              // double
+  waterGoal: number;                // double
+  aiDailyTips: string ;
+  meals: Meal[];
+}
+
+export interface ApiMealPlanResponse {
+  id: number;
+  weekNumber: number;
+  startDate: string;
+  endDate: string;
+  weeklyCalorieTarget: number;
+  weeklyProteinTarget: number;
+  weeklyCarbTarget: number;
+  weeklyFatTarget: number;
+  weeklyStrategy: string;
+  aiPreparationTips: string | null;
+  days: DayPlan[];
+}

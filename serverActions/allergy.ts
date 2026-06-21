@@ -3,7 +3,7 @@ import { apiClient } from "@/configs/Axios"
 import { baseUrl } from "@/lib/constants";
 import { AllergenType, Allergy, AllergyFromServer, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 import { cookies} from "next/headers";
 
 
@@ -30,7 +30,7 @@ export const createAllergy = async(allergy:Allergy,id:string) => {
 
     );
     const responseData = response.data as ResponseData;
-    revalidateTag('allergies',"max")
+    updateTag('allergies');
     return {
         id:responseData.data!.id,
         type:AllergenType.CRUSTACEAN,
@@ -52,6 +52,7 @@ export const createAllergy = async(allergy:Allergy,id:string) => {
 
 
         }
+        
         throw new Error(error.message || "something went wrong!")
 
 
@@ -73,7 +74,8 @@ export const getAllAllergies= async() : Promise<Allergy[]> => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
-            next: { tags: ['allergies'] ,revalidate: 60 } // Optional: for caching and revalidation
+            cache:'force-cache',
+            next: { tags: ['allergies'] } // Optional: for caching and revalidation
             
         }) ;
 
@@ -113,7 +115,7 @@ export const deleteAllergy = async (id:string) => {
             }
         })
         const resposeData = response.data as ResponseData ;
-        revalidateTag('allergies',"max");
+        updateTag('allergies')
         
 
 

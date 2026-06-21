@@ -4,7 +4,7 @@ import { Ingredient, ResponseData } from "@/lib/interfaces";
 
 export const getIngredients = async(currentPage:number) => {
     const response = await fetch(`${baseUrl}/ingredients?pageIdx=${currentPage}`,{
-        next:{revalidate:60}
+        cache:"force-cache"
     });
     if(response.status===404) {
         return []

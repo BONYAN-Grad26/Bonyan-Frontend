@@ -2,7 +2,9 @@
 import { apiClient } from "@/configs/Axios";
 import { HealthData, HealthProfileData, OnboardingData, RegisterUserData, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 
 export const registerUser = async (userData: RegisterUserData) : Promise<ResponseData> =>  {
@@ -14,6 +16,7 @@ export const registerUser = async (userData: RegisterUserData) : Promise<Respons
                 maxAge:  60*5, 
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
+
             }
         );
 
@@ -47,6 +50,7 @@ export const sendOtp = async (otp:string) => {
                 maxAge:  calcSeconds(data.data.expiresIn as string), 
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
+
             }
         ); 
 
@@ -60,35 +64,7 @@ export const sendOtp = async (otp:string) => {
 
 }
 
-export const loginUser = async (email:string,password:string) => {
-    const cookieStore = await cookies();
-    try {
-        const {data} : {data: ResponseData} = await apiClient.post('/auth/login', { email, password });
-        if(!data.success) {
-            throw new Error(data.error.message || 'Login failed');
-        }
-        if(!data.data?.accessToken) {
-            throw new Error("Access token not found in response");
-        }
-        cookieStore.set('access_token', data.data?.accessToken,
-            { 
-                maxAge: calcSeconds(data.data.expiresIn as string),
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-            }
-        ); 
 
-        return data.data?.message || 'Login successful!'; // Return the message from the response or a default message
-
-
-    } catch (error) {
-        console.error("Error during login:", error);
-
-        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
-        
-        throw new Error(errorMessage || 'An error occurred during login');
-    }
-}
 
 export const logoutUser = async () => {
     const cookieStore = await cookies();
@@ -140,7 +116,36 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
     }
 
 }
+export const loginUser = async (email:string,password:string) => {
+    try {
+        const {data} : {data: ResponseData} = await apiClient.post('/auth/login', { email, password });
+        if(!data.success) {
+            throw new Error(data.error.message || 'Login failed');
+        }
+        if(!data.data?.accessToken) {
+            throw new Error("Access token not found in response");
+        }
+        const cookieStore = await cookies();
+        cookieStore.set('access_token', data.data?.accessToken,
+            { 
+                maxAge: 60*60, //calcSeconds(data.data.expiresIn as string),
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
 
+            }
+        ); 
+
+        return data.data?.message || 'Login successful!'; // Return the message from the response or a default message
+
+
+    } catch (error) {
+        console.error("Error during login:", error);
+
+        const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
+        
+        throw new Error(errorMessage || 'An error occurred during login');
+    }
+}
 const calcSeconds = (expires_in: string): number => {
     const startTime = new Date(expires_in);
     const endTime = new Date();
@@ -148,5 +153,17 @@ const calcSeconds = (expires_in: string): number => {
     const diffInSeconds = Math.floor(endTime.getTime() - startTime.getTime()) / 1000;
 
     return diffInSeconds;
+
+}
+
+export const LogoutWhenStatusEqual401 = async(status:number) => {
+    if(status===401) {
+    await logoutUser();
+
+    revalidatePath("/", "layout");
+
+    redirect("/");
+    }
+
 
 }

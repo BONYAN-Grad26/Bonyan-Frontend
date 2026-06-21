@@ -3,8 +3,7 @@ import { apiClient } from "@/configs/Axios";
 import { baseUrl } from "@/lib/constants";
 import { HealthData, HealthProfileData, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
-import { revalidateTag } from "next/cache";
-import { requestToBodyStream } from "next/dist/server/body-streams";
+import { revalidateTag, updateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const getUserProfile = async () => { 
@@ -22,7 +21,8 @@ export const getUserProfile = async () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
-            next: { tags: ['profile'] ,revalidate: 60 } // Optional: for caching and revalidation
+            cache:"force-cache",
+            next: { tags: ['profile']  } // Optional: for caching and revalidation
             
         });
         if(response.status===404) {
@@ -63,7 +63,7 @@ export const editProfile = async(id:string,formData:HealthData) => {
             }
         })
         const responseData = response.data as ResponseData ;
-        revalidateTag("profile","max");
+        updateTag("profile")
         return responseData.error.message as string;
 
 

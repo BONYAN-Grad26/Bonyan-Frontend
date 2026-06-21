@@ -1,7 +1,9 @@
-import { ActivityLevel, Allergy, NutritionData, WorkoutData } from "./interfaces";
-import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad} from 'lucide-react';
+import { ActivityLevel, Allergy, ApiMealPlanResponse, NutritionData, WorkoutData } from "./interfaces";
+import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad,Workflow} from 'lucide-react';
 
 export const baseUrl = process.env.BASE_URL || 'http://localhost:8080/api';
+
+export const machineUrl = process.env.MACHINE_URL || 'https://fitness-part.onrender.com'
 
 export const staticAllergies : Allergy[] = [
     { id: '1', name: 'Penicillin', type: 'medicine', severity: 'high', notes: 'Causes severe skin rash and shortness of breath.' },
@@ -22,7 +24,8 @@ export const navItems = [
   { label: 'Workouts', href: '/workouts', icon: Dumbbell },
   { label: 'Profile', href: '/profile', icon: User },
   { label: 'Settings', href: '/settings', icon: Settings },
-  { label :"ingredients" ,href :"/ingredients?currentPage=1" , icon:Salad}
+  { label :"ingredients" ,href :"/ingredients?currentPage=1" , icon:Salad},
+  {label:"Machine Classifier", href:"/machine-classfier", icon : Workflow}
 ];
 
 // --- 2. Default/Mock Data Formulation ---
@@ -110,3 +113,86 @@ export const macros = (nutrition:NutritionData) => {
         { name: 'Sugar', value: nutrition.targetSugar, unit: 'g', color: 'bg-slate-400', textColor: 'text-slate-700', progress: '30%' },
     ];
 }
+export const parseDescription = (desc: string) => {
+  const calories = parseFloat(desc.match(/Calories:\s*([\d.]+)/)?.[1] || '0');
+  const protein = parseFloat(desc.match(/Protein:\s*([\d.]+)g/)?.[1] || '0');
+  const carbs = parseFloat(desc.match(/Carbs:\s*([\d.]+)g/)?.[1] || '0');
+  const fat = parseFloat(desc.match(/Fat:\s*([\d.]+)g/)?.[1] || '0');
+  return { calories, protein, carbs, fat };
+};
+export const apiData: ApiMealPlanResponse[] = [
+  {
+    id: 101,
+    weekNumber: 26,
+    startDate: "2026-06-21",
+    endDate: "2026-06-27",
+    weeklyCalorieTarget: 15400.0,
+    weeklyProteinTarget: 1050.0,
+    weeklyCarbTarget: 1925.0,
+    weeklyFatTarget: 490.0,
+    weeklyStrategy: "Lean Mass Gain & High Energy Maintenance",
+    aiPreparationTips: "Drink at least 3L of water and space meals by 3-4 hours.",
+    days: [
+      {
+        id: 1,
+        date: "2026-06-21",
+        dayOfWeek: 1, // Sunday
+        targetCalories: 2200.0,
+        targetProtein: 150.0,
+        targetCarbs: 275.0,
+        targetFat: 70.0,
+        targetFiber: 30.0,
+        targetSugar: 45.0,
+        waterGoal: 3.5,
+        aiDailyTips: "Focus on slow-digesting carbs today to sustain steady energy levels.",
+        meals: [
+          {
+            id: 1,
+            name: "Power Oatmeal with Greek Yogurt and Berries",
+            mealType: "BREAKFAST",
+            description: "Calories: 681.8 | Protein: 33.3g | Carbs: 98.1g | Fat: 20.1g",
+            order: 1,
+            preparationInstructions: "Cook oats with water or low fat milk. Stir in Greek yogurt, top with sliced banana and a portion of almonds.",
+            preparationTime: 15,
+            ingredients: [
+              { ingredientId: 23, ingredientName: "Oats", quantity: 100, measurementUnit: "g" },
+              { ingredientId: 27, ingredientName: "Greek Yogurt", quantity: 100, measurementUnit: "g" },
+              { ingredientId: 14, ingredientName: "Banana", quantity: 100, measurementUnit: "g" },
+              { ingredientId: 24, ingredientName: "Almonds", quantity: 25, measurementUnit: "g" }
+            ]
+          },
+          {
+            id: 2,
+            name: "Grilled Chicken Breast with Brown Rice and Steamed Broccoli",
+            mealType: "LUNCH",
+            description: "Calories: 497.9 | Protein: 53.3g | Carbs: 32.9g | Fat: 16.9g",
+            order: 2,
+            preparationInstructions: "Grill chicken breast. Cook brown rice. Steam broccoli. Toss with olive oil.",
+            preparationTime: 30,
+            ingredients: [
+              { ingredientId: 18, ingredientName: "Chicken Breast", quantity: 150, measurementUnit: "g" },
+              { ingredientId: 22, ingredientName: "Brown Rice", quantity: 100, measurementUnit: "g" },
+              { ingredientId: 17, ingredientName: "Broccoli", quantity: 150, measurementUnit: "g" },
+              { ingredientId: 29, ingredientName: "Olive Oil", quantity: 10, measurementUnit: "g" }
+            ]
+          },
+          {
+            id: 3,
+            name: "Baked Salmon with Black Beans and Tomato Salad",
+            mealType: "DINNER",
+            description: "Calories: 875.4 | Protein: 64.7g | Carbs: 18.6g | Fat: 43.7g",
+            order: 3,
+            preparationInstructions: "Bake salmon. Cook black beans. Prepare a salad with sliced tomato and olive oil.",
+            preparationTime: 25,
+            ingredients: [
+              { ingredientId: 20, ingredientName: "Salmon", quantity: 250, measurementUnit: "g" },
+              { ingredientId: 30, ingredientName: "Black Beans", quantity: 150, measurementUnit: "g" },
+              { ingredientId: 15, ingredientName: "Tomato", quantity: 150, measurementUnit: "g" },
+              { ingredientId: 29, ingredientName: "Olive Oil", quantity: 10, measurementUnit: "g" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

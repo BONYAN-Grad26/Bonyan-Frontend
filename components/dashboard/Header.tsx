@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 
 interface HeaderProps {
-    nutrition:NutritionData,
+    nutrition:NutritionData ,
     activeTab:'nutrition' | 'workout',
     setActiveTab:React.Dispatch<React.SetStateAction<'nutrition' | 'workout'>>
 }
@@ -19,7 +19,7 @@ const Header = ({nutrition,activeTab,setActiveTab}:HeaderProps) => {
     setLoading(true);
     try {
       const data = await generateWorkout();
-      toast.success('generated');
+      toast.success('Generated successfully !');
 
       router.refresh();
 
@@ -35,9 +35,10 @@ const Header = ({nutrition,activeTab,setActiveTab}:HeaderProps) => {
   }
 
   const generateNutritionHandling = async()=> {
+    setLoading(true);
     try {
       const data = await generateNutrition();
-      toast.success('generated');
+      toast.success('Generated successfully !');
       router.refresh()
       
     } catch (error:any) {
@@ -53,7 +54,8 @@ const Header = ({nutrition,activeTab,setActiveTab}:HeaderProps) => {
   return (
 <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-5 gap-4">
   <div className="flex flex-col md:flex-row md:items-center gap-4">
-    <div>
+    {
+      <div>
       <div className="flex items-center gap-2 text-slate-500 text-sm mb-1">
         <Calendar size={16} className="text-slate-400" />
         <span>{nutrition.date}</span>
@@ -65,6 +67,8 @@ const Header = ({nutrition,activeTab,setActiveTab}:HeaderProps) => {
         diet & workout today plans
       </h1>
     </div>
+    }
+
 
     {/* TABS CONTROL */}
     <div className="flex bg-slate-200/60 p-1 rounded-xl self-start md:self-center border border-slate-200">
@@ -100,18 +104,22 @@ const Header = ({nutrition,activeTab,setActiveTab}:HeaderProps) => {
     {activeTab === 'nutrition' ? (
       <button 
         onClick={() => generateNutritionHandling()}
+        disabled={loading}
         className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all"
       >
         <Utensils size={15} />
-        Generate Nutrition
+        {!loading?"Generate Nutrition":"generating"}
       </button>
     ) : (
       <button 
+         disabled={loading}
         onClick={() => generateWorkoutHandling()}
         className="flex items-center gap-2 px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold shadow-sm transition-all"
       >
         <Dumbbell size={15} />
-        Generate Workout
+        {!loading?"Generate Workout":"generating"}
+
+        
       </button>
     )}
   </div>

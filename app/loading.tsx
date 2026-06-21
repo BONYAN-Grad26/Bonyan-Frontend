@@ -1,12 +1,11 @@
-import React from 'react'
+'use client';
 
-const loading = () => {
+import { Loader2 } from 'lucide-react';
+
+export default function GlobalLoading() {
   return (
-    <div className="flex items-center justify-center h-screen">
-        <div className="loader"></div>
-
+    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50">
+      <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
     </div>
-  )
+  );
 }
-
-export default loading

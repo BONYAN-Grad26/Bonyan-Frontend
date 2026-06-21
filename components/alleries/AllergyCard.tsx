@@ -17,6 +17,7 @@ interface AllergyCardProps {
 export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
     const router = useRouter();
     const [isOpen,setIsOpen] = useState(false);
+    const [loading,setLoading] = useState(false)
 
 
 
@@ -24,6 +25,7 @@ export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
     const handleDelete = async(id: string) => {
       
       try {
+        setLoading(true)
         await deleteAllergy(id)
         toast.success("Allergy is deleted successfully!")
         router.refresh();
@@ -34,6 +36,7 @@ export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
 
       } finally {
         setIsOpen(false)
+        setLoading(false)
 
       }
 
@@ -46,7 +49,7 @@ export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
 
   return (
     <>
-    <DeleteModal isOpen={isOpen} onClose={()=>setIsOpen(false)} onConfirm={()=>handleDelete(allergy.id)}  />
+    <DeleteModal loading={loading} isOpen={isOpen} onClose={()=>setIsOpen(false)} onConfirm={()=>handleDelete(allergy.id)}  />
                   <div 
                     className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
                   >

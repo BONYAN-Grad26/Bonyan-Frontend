@@ -4,9 +4,9 @@ const protectedRoutes = ['/dashboard','/meals','/profile','/settings','/workouts
 export async function middleware(request:NextRequest) {
     
     const token = request.cookies.get('access_token')?.value;
+
     const email = request.cookies.get("email")?.value;
     const pathname = request.nextUrl.pathname;
-
     if(!token) {
 
         const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));

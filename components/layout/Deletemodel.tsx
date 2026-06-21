@@ -8,6 +8,7 @@ interface DeleteModalProps {
   onConfirm: () => void;
   title?: string;
   message?: string;
+  loading:boolean
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
@@ -16,8 +17,12 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   onConfirm,
   title = "Delete Confirmation",
   message = "Are you sure you want to delete this item? This action cannot be undone.",
+  loading
 }) => {
   if (!isOpen) return null;
+
+
+  
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity animate-fadeIn">
@@ -61,6 +66,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
         {/* Control Buttons */}
         <div className="mt-6 flex flex-row gap-3 justify-end">
           <button
+            disabled={loading}
             type="button"
             onClick={onClose}
             className="inline-flex w-full justify-center rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-200 sm:w-auto"
@@ -68,11 +74,12 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
             Cancel
           </button>
           <button
+            disabled={loading}
             type="button"
             onClick={onConfirm}
-            className="inline-flex w-full justify-center rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition-colors duration-200 sm:w-auto"
+            className="inline-flex w-full justify-center rounded-xl disabled:bg-red-400 bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition-colors duration-200 sm:w-auto"
           >
-            Delete
+            {loading?'Deleting...':'Delete'}
           </button>
         </div>
       </div>
