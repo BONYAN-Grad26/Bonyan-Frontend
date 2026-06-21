@@ -4,6 +4,7 @@ import { baseUrl } from "@/lib/constants";
 import { HealthData, HealthProfileData, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidateTag } from "next/cache";
+import { requestToBodyStream } from "next/dist/server/body-streams";
 import { cookies } from "next/headers";
 
 export const getUserProfile = async () => { 
@@ -24,14 +25,23 @@ export const getUserProfile = async () => {
             next: { tags: ['profile'] ,revalidate: 60 } // Optional: for caching and revalidation
             
         });
+        if(response.status===404) {
+            return null ;
+        }
+        const dataOfResponse :ResponseData = await response.json();
+
         if (!response.ok) {
-            throw new Error(`Error fetching user profile: ${response.statusText}`);
+            throw new Error(dataOfResponse.error.message);
         }
 
-        const dataOfResponse :ResponseData = await response.json();
         return dataOfResponse.data as HealthProfileData ;
 
     } catch (error) { 
+        if(axios.isAxiosError(error)) {
+            const message = error.response?.data.error.message || 'something went wrong' ;
+            throw new Error(message);
+
+        }
 
         throw new Error(`Error fetching user profile: ${error}`);
     }

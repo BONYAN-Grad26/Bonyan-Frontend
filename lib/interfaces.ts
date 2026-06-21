@@ -212,3 +212,8 @@ export interface WorkoutData {
   focus: string;
   exercises: Array<Exercise>;
 }
+
+export interface Ingredient {
+  id: number;
+  name: string;
+}

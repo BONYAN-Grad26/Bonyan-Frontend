@@ -5,12 +5,14 @@ import { EditForm } from '@/components/profile/EditForm';
 import { PrivacySettings } from '@/components/profile/PrivacySettings';
 import { UpdateForm } from '@/components/profile/UpdateForm';
 import { Button } from '@/components/ui/button';
+import { getAllAllergies } from '@/serverActions/allergy';
 import { getUserProfile } from '@/serverActions/profile';
 import { User, Edit2, Heart, Target, AlertCircle } from 'lucide-react';
 
 export default async function ProfilePage() {
   
   const user = await getUserProfile(); 
+  const alleries = await getAllAllergies();
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -141,9 +143,15 @@ export default async function ProfilePage() {
 
               <div className="glass rounded-2xl p-6 space-y-4">
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
-                  <p className="text-sm text-blue-800 dark:text-blue-300">
-                    <strong>Allergies:</strong> None recorded
-                  </p>
+                  <div className="text-sm text-blue-800 dark:text-blue-300">
+                    <strong>Allergies:</strong>
+
+                    <div className="flex gap-3 flex-wrap items-center">
+                      {alleries.map((allergy, index) => (
+                        <span key={index}>-{allergy.name}</span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900 rounded-lg p-4">

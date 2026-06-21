@@ -6,10 +6,13 @@ import { Allergy } from '@/lib/interfaces';
 import { AllergyCard } from './AllergyCard';
 
 interface ClientAllergyProps {
-    allergies2: Allergy[]
+    allergies2: Allergy[];
+    id:string;
+    name:string
+
 }
 
-const ClientAllergy = ({allergies2}:ClientAllergyProps) => {
+const ClientAllergy = ({allergies2,id,name}:ClientAllergyProps) => {
 
     const [allergies, setAllergies] = useState<Allergy[]>(allergies2);
   return (
@@ -21,7 +24,7 @@ const ClientAllergy = ({allergies2}:ClientAllergyProps) => {
               <Plus size={20} className="text-indigo-600" />
               Add New Allergy
             </h2>
-            <AllergyForm setAllergies={setAllergies} allergies={allergies} />
+            <AllergyForm name={name} id={id} setAllergies={setAllergies} allergies={allergies} />
           </div>
 
           {/* Right Side: Allergies Grid List */}

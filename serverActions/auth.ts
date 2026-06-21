@@ -8,17 +8,30 @@ import { cookies } from "next/headers";
 export const registerUser = async (userData: RegisterUserData) : Promise<ResponseData> =>  {
     try {
         const response = await  apiClient.post('/auth/register', userData);
+        const cookieStore = await cookies();
+        cookieStore.set('email', userData.email,
+            { 
+                maxAge:  60*5, 
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+            }
+        );
+
         return response.data;
 
     } catch (error:any) {
         console.error(error.response?.data);
         const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
-        
         throw new Error(errorMessage || 'An error occurred during resgister');
     }
 }
-export const sendOtp = async (otp:string,email:string) => {
+export const sendOtp = async (otp:string) => {
         const cookieStore = await cookies();
+        const email = cookieStore.get('email')?.value;
+        if(!email) {
+            throw new Error('You must register before');
+        }
+
 
     try {
         const {data} : {data: ResponseData} = await apiClient.post('/auth/confirm-email', { otp, email });

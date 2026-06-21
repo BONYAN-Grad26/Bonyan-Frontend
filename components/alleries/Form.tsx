@@ -10,14 +10,16 @@ import {toast} from "react-hot-toast"
 interface AllergyFormProps  {
   allergies: Allergy[] ;
   setAllergies: React.Dispatch<React.SetStateAction<Allergy[]>>;
+  id:string,
+  name:string
 }
 
-export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
+export const AllergyForm = ({allergies,setAllergies,id,name} : AllergyFormProps) => {
     const [loading,setLoading] = useState(false);
     const router = useRouter();
 
     const [formData, setFormData] = useState({
-        name: '',
+        name,
         type: AllergenType.CRUSTACEAN,
         severity: 'low',
         notes: ''
@@ -48,10 +50,10 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
 
     try {
       setLoading(true);
-      await createAllergy(newAllergy)
+      const savedAllergy = await createAllergy(newAllergy,id)
       toast.success("Allergy is added successfully!")
       router.refresh();
-      setAllergies([newAllergy, ...allergies]);
+      setAllergies([...allergies,savedAllergy]);
 
 
     } catch(error:any) {
@@ -60,7 +62,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
 
     } finally {
       setLoading(false);
-      setFormData({ name: '', type: 'food', severity: 'low', notes: '' }); // Reset Form
+      setFormData({ name: '', type: AllergenType.CRUSTACEAN, severity: 'low', notes: '' }); // Reset Form
     }
 
 
@@ -73,6 +75,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Allergen / Trigger</label>
                 <input
+                  disabled={loading}
                   type="text"
                   required
                   placeholder="e.g., Penicillin, Peanuts, Gluten"
@@ -86,6 +89,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Allergy Type</label>
 <select
+  disabled={loading}
   value={formData.type}
   onChange={(e) =>
     setFormData({
@@ -120,6 +124,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
                   ].map((item) => (
                     <label key={item.value} className="cursor-pointer">
                       <input
+                        disabled={loading}
                         type="radio"
                         name="severity"
                         value={item.value}
@@ -139,6 +144,7 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Symptoms or Emergency Notes</label>
                 <textarea
+                  disabled={loading}
                   required
                   rows={3}
                   placeholder="Describe your reaction or any required first-aid steps..."
@@ -152,10 +158,10 @@ export const AllergyForm = ({allergies,setAllergies} : AllergyFormProps) => {
               <button
                 disabled={loading}
                 type="submit"
-                className={`w-full py-3 ${loading? "bg-slate-500":"bg-slate-900"}  hover:bg-slate-800 text-white font-medium rounded-xl shadow-sm transition-colors text-sm flex items-center justify-center gap-2 mt-2`}
+                className={`w-full py-3 cursor-pointer ${loading? "bg-slate-500":"bg-slate-900 hover:bg-slate-800"}   text-white font-medium rounded-xl shadow-sm transition-colors text-sm flex items-center justify-center gap-2 mt-2`}
               >
                 <Plus size={18} />
-                Save Allergy
+                {!loading?"Save Allergy":"Save Allergy..."}
               </button>
             </form>
   )

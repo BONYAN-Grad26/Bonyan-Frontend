@@ -7,7 +7,7 @@ import { revalidateTag } from "next/cache";
 import { cookies} from "next/headers";
 
 
-export const createAllergy = async(allergy:Allergy) => {
+export const createAllergy = async(allergy:Allergy,id:string) => {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('access_token')?.value;
 
@@ -15,12 +15,12 @@ export const createAllergy = async(allergy:Allergy) => {
         throw new Error("Access token not found");
     }
     try {
-        console.log({allergy});
         const response = await apiClient.post("/allergy" ,{
             name:allergy.name,
             description: allergy.notes,
             type:allergy.type,
-            userId:1
+            ingredientId: Number(id)
+
         },
         {
             headers:{
@@ -29,8 +29,18 @@ export const createAllergy = async(allergy:Allergy) => {
         } 
 
     );
-    //const responseData = response.data as ResponseData;
+    const responseData = response.data as ResponseData;
     revalidateTag('allergies',"max")
+    return {
+        id:responseData.data!.id,
+        type:AllergenType.CRUSTACEAN,
+        name:responseData.data!.name,
+        severity:"high",
+        notes:responseData.data!.description
+
+
+    } as Allergy
+
 
 
 
@@ -57,7 +67,7 @@ export const getAllAllergies= async() : Promise<Allergy[]> => {
     if(!accessToken) {
         throw new Error("Access token not found");
     }
-        const response = await fetch(`${baseUrl}/allergy/user`, {
+        const response = await fetch(`${baseUrl}/allergy/me`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,10 +76,14 @@ export const getAllAllergies= async() : Promise<Allergy[]> => {
             next: { tags: ['allergies'] ,revalidate: 60 } // Optional: for caching and revalidation
             
         }) ;
-        if (!response.ok) {
-            throw new Error(`Error fetching user allergies: ${response.statusText}`);
+
+        if(response.status===404) {
+            return [];
         }
         const responseData = await response.json() as ResponseData  ;
+        if (!response.ok) {
+            throw new Error(`Error fetching user allergies: ${responseData.error.message}`);
+        }
         let alleries = responseData.data as AllergyFromServer[] ;
         
 
@@ -99,7 +113,7 @@ export const deleteAllergy = async (id:string) => {
             }
         })
         const resposeData = response.data as ResponseData ;
-        revalidateTag('allergies',"max")
+        revalidateTag('allergies',"max");
         
 
 

@@ -1,11 +1,12 @@
 "use client"
 import { Allergy } from '@/lib/interfaces'
-import React from 'react'
+import React, { useState } from 'react'
 import { ShieldAlert, Plus, Trash2, Info, Egg, ShieldAlert as MedicineIcon, Leaf, Form } from 'lucide-react';
 import {toast} from 'react-hot-toast'
 import { deleteAllergy } from '@/serverActions/allergy';
 import { getSeverityBadge } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
+import DeleteModal from '../layout/Deletemodel';
 interface AllergyCardProps {
   allergy: Allergy;
   key:number ;
@@ -15,10 +16,13 @@ interface AllergyCardProps {
 
 export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
     const router = useRouter();
+    const [isOpen,setIsOpen] = useState(false);
+
 
 
 
     const handleDelete = async(id: string) => {
+      
       try {
         await deleteAllergy(id)
         toast.success("Allergy is deleted successfully!")
@@ -29,13 +33,20 @@ export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
         toast.error(error.message)
 
       } finally {
+        setIsOpen(false)
 
       }
 
     };
 
 
+
+    
+
+
   return (
+    <>
+    <DeleteModal isOpen={isOpen} onClose={()=>setIsOpen(false)} onConfirm={()=>handleDelete(allergy.id)}  />
                   <div 
                     className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group"
                   >
@@ -74,7 +85,7 @@ export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
                       </span>
                       
                       <button 
-                        onClick={() => handleDelete(allergy.id)}
+                        onClick={() => setIsOpen(true)}
                         className="text-slate-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-red-50 transition-colors opacity-100 md:opacity-0 group-hover:opacity-100"
                         title="Delete Allergy"
                       >
@@ -82,5 +93,6 @@ export const AllergyCard = ({allergy,setAllergies}:AllergyCardProps) => {
                       </button>
                     </div>
                   </div>
+      </>
   )
 }

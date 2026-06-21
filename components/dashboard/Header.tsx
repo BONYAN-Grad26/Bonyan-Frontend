@@ -61,8 +61,8 @@ const Header = ({nutrition,activeTab,setActiveTab}:HeaderProps) => {
           Day {nutrition.dayOfWeek}
         </span>
       </div>
-      <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-        Health & Performance Matrix
+      <h1 className="text-2xl font-semibold capitalize text-slate-900 tracking-tight">
+        diet & workout today plans
       </h1>
     </div>
 

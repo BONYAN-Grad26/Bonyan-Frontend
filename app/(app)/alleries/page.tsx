@@ -6,11 +6,18 @@ import ClientAllergy from '@/components/alleries/ClientAllergy';
 import { getAllAllergies } from '@/serverActions/allergy';
 import { staticAllergies } from '@/lib/constants';
 
+interface AllergiesPageProps {
+  searchParams : Promise<{id:string,name:string}>
+}
 
+export default async function AllergiesPage({searchParams}:AllergiesPageProps) {
+  const {id,name} = await searchParams ;
+  if(!id || !name) {
+    throw new Error('missing details')
+  }
+  
 
-export default async function AllergiesPage() {
-
-  //const allergies = await getAllAllergies() ;
+  const allergies = await getAllAllergies() ;
 
 
 
@@ -35,7 +42,7 @@ export default async function AllergiesPage() {
           </div>
         </div>
         
-        <ClientAllergy allergies2={staticAllergies} />
+        <ClientAllergy id={id} allergies2={allergies} name={name} />
 
 
       </div>

@@ -36,7 +36,7 @@ const Workout = ({workout}:WorkoutProps) => {
                 {workout.exercises.map((exercise, index) => (
                   <div key={index} className="bg-white border border-slate-200/80 rounded-xl p-5 flex flex-col justify-between space-y-4">
                     <div>
-                      <h4 className="font-bold text-sm text-slate-800 border-b border-slate-100 pb-2 mb-3 tracking-tight">
+                      <h4 className="font-semibold text-sm text-slate-800 border-b border-slate-100 pb-2 mb-3 tracking-tight">
                         {exercise.name}
                       </h4>
                       

@@ -1,4 +1,5 @@
 import MainDashborad from "@/components/dashboard/MainDashborad";
+import { defaultNutrition, defaultWorkout } from "@/lib/constants";
 import { getNutrition, getWorkout } from "@/serverActions/dashboard";
 
 
