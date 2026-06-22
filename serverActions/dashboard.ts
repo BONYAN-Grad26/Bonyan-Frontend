@@ -14,7 +14,6 @@ export const getNutrition = async () => {
     if(!accessToken) {
         throw new Error("Access token not found");
     }
-    console.log({accessToken})
 
     const response = await fetch(`${baseUrl}/diet-plan/today`,{
         method:'GET',
@@ -68,7 +67,6 @@ export const getWorkout = async () => {
         return null
     }  
     const responseData = await response.json() as ResponseData;
-    console.log({response})
 
     if (!response.ok){
         throw new Error(responseData.error.message)

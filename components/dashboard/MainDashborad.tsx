@@ -23,7 +23,7 @@ const MainDashboard = ({ nutrition, workout }: MainDashboardProps) => {
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* --- HEADER --- */}
-          <Header nutrition={nutrition || defaultNutrition} activeTab={activeTab} setActiveTab={setActiveTab} />
+          <Header workout={workout} nutrition={nutrition} activeTab={activeTab} setActiveTab={setActiveTab} />
 
 
         {/* --- AI ADVISORY BANNER --- */}

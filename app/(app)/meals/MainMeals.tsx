@@ -36,7 +36,6 @@ export default function MealsPage({ apiData }: MealPageProps) {
     }, { calories: 0, protein: 0, carbs: 0, fat: 0 });
   }, [currentDay]);
 
-  // حماية الكود (Fallback) في حالة عدم وجود أي بيانات مستلمة
   if (!currentWeek || !currentDay) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background text-muted-foreground">
