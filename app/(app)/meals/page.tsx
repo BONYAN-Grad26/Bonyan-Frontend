@@ -7,7 +7,7 @@ const page = async () => {
 
   const apiData = await getWeeklyPlans();
 
-  if(!apiData.length) {
+  if( !apiData || !apiData.length ){
     return (
 <div className="w-full min-h-screen flex flex-col justify-center items-center gap-6 bg-slate-50 p-6">
         <span className="text-6xl animate-bounce">🍽️</span>

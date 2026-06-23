@@ -30,7 +30,6 @@ export const getWeeklyPlans = async() => {
     if(!response.ok) {
         throw new Error(dataResponse.error.message || "something went wrong")
     }
-    console.log(dataResponse.data );
 
     return dataResponse.data as ApiMealPlanResponse[]
 

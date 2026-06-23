@@ -34,6 +34,7 @@ export const getUserProfile = async () => {
             throw new Error(dataOfResponse.error.message);
         }
 
+
         return dataOfResponse.data as HealthProfileData ;
 
     } catch (error) { 

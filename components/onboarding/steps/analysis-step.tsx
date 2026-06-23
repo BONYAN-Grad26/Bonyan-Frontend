@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { OnboardingData } from '@/lib/interfaces';
 import { createHealtheMatrix } from '@/serverActions/auth';
+import { da } from 'date-fns/locale';
 import { CheckCircle2, Zap, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -39,7 +40,35 @@ export function AnalysisStep({ data }: AnalysisStepProps) {
     return Math.round(baseCalories * multiplier);
   };
   const handleSendingHealthMatrix = async (e:React.MouseEvent<HTMLButtonElement>) => {
-    setLoading(true)
+    setLoading(true);
+    if(data.age<20 || data.age>120) {
+      toast.error("Age must be between 20 & 120");
+      return
+    }
+    if(data.weight<20 || data.weight>500) {
+      toast.error("Weight must be between 20 & 500");
+      return 
+    }
+    if(data.height<20 || data.height>500) {
+      toast.error("Height must be between 20 & 500")
+      return
+    }
+    if(data.fatPercentage<1 || data.fatPercentage>70) {
+      toast.error("Fatpercentage must be between 1 & 70")
+      return
+    }
+    if(data.musclePercentage<1 || data.fatPercentage>200) {
+      toast.error("MusclePercentage must be between 1 & 200")
+      return
+    }
+    if(data.targetWeight<20 || data.targetWeight>500) {
+      toast.error("TargetWeight must be between 20 & 500")
+      return
+    }
+    if(data.dailyCalories<1000) {
+      toast.error("DailyCalories must be greater than 1000")
+      return
+    }
     try {
       const result = await createHealtheMatrix(data) ;
       toast.success("Healtmatrix is created")

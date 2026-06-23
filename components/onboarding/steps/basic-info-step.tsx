@@ -31,10 +31,14 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
             type="number"
             placeholder="Enter your age"
             value={data.age || ''}
-            onChange={(e) => updateData({ age: parseInt(e.target.value) || 0 })}
+            onChange={(e) => {
+              
+              updateData({ age: parseInt(e.target.value) || 0 })
+            }}
             className="h-11"
             min={10}
             max={120}
+            required
           />
         </div>
 
@@ -42,6 +46,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">Gender</label>
           <select
+            required
             value={data.gender}
             onChange={(e) => updateData({ gender: e.target.value as Gender })}
             className="w-full h-11 px-4 rounded-lg border border-border bg-background text-foreground"
@@ -64,6 +69,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
             className="h-11"
             min={50}
             max={500}
+            required
           />
         </div>
 
@@ -73,11 +79,12 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
           <Input
             type="number"
             placeholder="Enter your weight"
-            value={data.weight || ''}
+            value={data.weight || "" }
             onChange={(e) => updateData({ weight: parseInt(e.target.value) || 0 })}
             className="h-11"
             min={20}
             max={500}
+            required
           />
         </div>
       </div>

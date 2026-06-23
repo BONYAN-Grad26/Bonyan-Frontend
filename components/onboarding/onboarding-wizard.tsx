@@ -31,8 +31,8 @@ export function OnboardingWizard() {
   const [data, setData] = useState<OnboardingData>({
     age: 0,
     gender: Gender.MALE,
-    height: 0,
-    weight: 0,
+    height: 20,
+    weight: 20,
     musclePercentage: 0,
     fatPercentage: 0,
     activityLevel: ActivityLevel.LIGHTLY_ACTIVE,

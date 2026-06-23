@@ -24,10 +24,10 @@ export const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Meals', href: '/meals', icon: Apple },
   { label: 'Workouts', href: '/workouts', icon: Dumbbell },
+  { label :"ingredients" ,href :"/ingredients?currentPage=1" , icon:Salad},
+  {label:"Machine Classifier", href:"/machine-classfier", icon : Workflow},
   { label: 'Profile', href: '/profile', icon: User },
   { label: 'Settings', href: '/settings', icon: Settings },
-  { label :"ingredients" ,href :"/ingredients?currentPage=1" , icon:Salad},
-  {label:"Machine Classifier", href:"/machine-classfier", icon : Workflow}
 ];
 
 // --- 2. Default/Mock Data Formulation ---
