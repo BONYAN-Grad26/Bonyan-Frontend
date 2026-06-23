@@ -75,7 +75,7 @@ export function OnboardingWizard() {
       case 5:
         return <MedicalNotesStep data={data} updateData={updateData} onNext={nextStep} />;
       case 6:
-        return <AnalysisStep data={data} />;
+        return <AnalysisStep setCurrentStep={setCurrentStep} data={data} />;
       default:
         return null;
     }
