@@ -60,7 +60,7 @@ export const generateNutrition = async()=> {
             },
         });
         const responseData = response.data as ResponseData ;
-        updateTag('diet-plans')
+        updateTag('diet-plans');
         return responseData.data ;
         
 

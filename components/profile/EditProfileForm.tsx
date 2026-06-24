@@ -93,12 +93,12 @@ const EditProfileForm = ({id,user}:{id:string,user:HealthProfileData }) => {
         {/* Weight & Height */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Weight (kg)</label>
-          <input min={50} disabled={loading} type="number" step="0.1" name="weightKg" value={formData.weightKg} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
+          <input min={50} max={500} disabled={loading} type="number" step="0.1" name="weightKg" value={formData.weightKg} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Height (cm)</label>
-          <input min={50} disabled={loading} type="number" step="0.1" name="heightCm" value={formData.heightCm} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
+          <input min={50} max={500} disabled={loading} type="number" step="0.1" name="heightCm" value={formData.heightCm} onChange={handleChange} className="mt-1 block w-full rounded border-gray-300 p-2 border" />
         </div>
 
         {/* Muscle Mass & Fat Percentage */}
@@ -140,7 +140,7 @@ const EditProfileForm = ({id,user}:{id:string,user:HealthProfileData }) => {
             <option value={DietGoal.LOSE_WEIGHT}>Lose Weight</option>
             <option value={DietGoal.MAINTAIN_WEIGHT}>Maintain Weight</option>
             <option value={DietGoal.GAIN_MUSCLE}>Gain Muscle</option>
-            <option value={DietGoal.GAIN_MUSCLE}>Gain Muscle</option>
+            <option value={DietGoal.IMPROVE_HEALTH }>Improve Health</option>
 
           </select>
         </div>

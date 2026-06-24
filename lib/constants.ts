@@ -53,9 +53,21 @@ export const defaultNutrition: NutritionData = {
       preparationInstructions: "1. Boil oats in water or almond milk.\n2. Stir in whey protein once cooked off the heat.\n3. Top with berries, chia seeds, and a dash of cinnamon.",
       order: 1,
       ingredients: [
-        { ingredientId: 201, ingredientName: "Rolled Oats", quantity: 60, measurementUnit: "g" },
-        { ingredientId: 202, ingredientName: "Whey Isolate", quantity: 30, measurementUnit: "g" },
-        { ingredientId: 203, ingredientName: "Chia Seeds", quantity: 10, measurementUnit: "g" }
+        {
+          ingredientId: 201, ingredientName: "Rolled Oats", quantity: 60, measurementUnit: "g",
+          id: 0,
+          name: ""
+        },
+        {
+          ingredientId: 202, ingredientName: "Whey Isolate", quantity: 30, measurementUnit: "g",
+          id: 0,
+          name: ""
+        },
+        {
+          ingredientId: 203, ingredientName: "Chia Seeds", quantity: 10, measurementUnit: "g",
+          id: 0,
+          name: ""
+        }
       ]
     },
     {
@@ -67,9 +79,21 @@ export const defaultNutrition: NutritionData = {
       preparationInstructions: "1. Grill the marinated chicken breast until internal temp hits 165°F.\n2. Serve alongside fluffy boiled basmati rice.\n3. Side with lightly salted steamed broccoli.",
       order: 2,
       ingredients: [
-        { ingredientId: 301, ingredientName: "Chicken Breast", quantity: 200, measurementUnit: "g" },
-        { ingredientId: 302, ingredientName: "Basmati Rice", quantity: 150, measurementUnit: "g" },
-        { ingredientId: 303, ingredientName: "Broccoli", quantity: 100, measurementUnit: "g" }
+        {
+          ingredientId: 301, ingredientName: "Chicken Breast", quantity: 200, measurementUnit: "g",
+          id: 0,
+          name: ""
+        },
+        {
+          ingredientId: 302, ingredientName: "Basmati Rice", quantity: 150, measurementUnit: "g",
+          id: 0,
+          name: ""
+        },
+        {
+          ingredientId: 303, ingredientName: "Broccoli", quantity: 100, measurementUnit: "g",
+          id: 0,
+          name: ""
+        }
       ]
     }
   ]
@@ -157,10 +181,26 @@ export const apiData: ApiMealPlanResponse[] = [
             preparationInstructions: "Cook oats with water or low fat milk. Stir in Greek yogurt, top with sliced banana and a portion of almonds.",
             preparationTime: 15,
             ingredients: [
-              { ingredientId: 23, ingredientName: "Oats", quantity: 100, measurementUnit: "g" },
-              { ingredientId: 27, ingredientName: "Greek Yogurt", quantity: 100, measurementUnit: "g" },
-              { ingredientId: 14, ingredientName: "Banana", quantity: 100, measurementUnit: "g" },
-              { ingredientId: 24, ingredientName: "Almonds", quantity: 25, measurementUnit: "g" }
+              {
+                ingredientId: 23, ingredientName: "Oats", quantity: 100, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 27, ingredientName: "Greek Yogurt", quantity: 100, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 14, ingredientName: "Banana", quantity: 100, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 24, ingredientName: "Almonds", quantity: 25, measurementUnit: "g",
+                id: 0,
+                name: ""
+              }
             ]
           },
           {
@@ -172,10 +212,26 @@ export const apiData: ApiMealPlanResponse[] = [
             preparationInstructions: "Grill chicken breast. Cook brown rice. Steam broccoli. Toss with olive oil.",
             preparationTime: 30,
             ingredients: [
-              { ingredientId: 18, ingredientName: "Chicken Breast", quantity: 150, measurementUnit: "g" },
-              { ingredientId: 22, ingredientName: "Brown Rice", quantity: 100, measurementUnit: "g" },
-              { ingredientId: 17, ingredientName: "Broccoli", quantity: 150, measurementUnit: "g" },
-              { ingredientId: 29, ingredientName: "Olive Oil", quantity: 10, measurementUnit: "g" }
+              {
+                ingredientId: 18, ingredientName: "Chicken Breast", quantity: 150, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 22, ingredientName: "Brown Rice", quantity: 100, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 17, ingredientName: "Broccoli", quantity: 150, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 29, ingredientName: "Olive Oil", quantity: 10, measurementUnit: "g",
+                id: 0,
+                name: ""
+              }
             ]
           },
           {
@@ -187,10 +243,26 @@ export const apiData: ApiMealPlanResponse[] = [
             preparationInstructions: "Bake salmon. Cook black beans. Prepare a salad with sliced tomato and olive oil.",
             preparationTime: 25,
             ingredients: [
-              { ingredientId: 20, ingredientName: "Salmon", quantity: 250, measurementUnit: "g" },
-              { ingredientId: 30, ingredientName: "Black Beans", quantity: 150, measurementUnit: "g" },
-              { ingredientId: 15, ingredientName: "Tomato", quantity: 150, measurementUnit: "g" },
-              { ingredientId: 29, ingredientName: "Olive Oil", quantity: 10, measurementUnit: "g" }
+              {
+                ingredientId: 20, ingredientName: "Salmon", quantity: 250, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 30, ingredientName: "Black Beans", quantity: 150, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 15, ingredientName: "Tomato", quantity: 150, measurementUnit: "g",
+                id: 0,
+                name: ""
+              },
+              {
+                ingredientId: 29, ingredientName: "Olive Oil", quantity: 10, measurementUnit: "g",
+                id: 0,
+                name: ""
+              }
             ]
           }
         ]

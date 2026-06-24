@@ -1,7 +1,7 @@
 "use client";
 
 import { classfiyMachine } from "@/serverActions/machine-classfier";
-import { machine } from "os";
+import Image from "next/image";
 import { useState, useRef } from "react";
 import toast from "react-hot-toast";
 
@@ -14,7 +14,6 @@ export default function GymClassifierPage() {
   const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle drag and drop states
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -70,9 +69,6 @@ export default function GymClassifierPage() {
     } finally {
         setIsAnalyzing(false)
     }
-
-    
-
   };
 
   // Copy YouTube link to clipboard
@@ -90,7 +86,7 @@ export default function GymClassifierPage() {
         
         {/* Header Section */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 mb-3">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 mb-3">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
@@ -99,10 +95,8 @@ export default function GymClassifierPage() {
           <p className="text-sm text-slate-500 mt-1">Upload a photo of any gym equipment to identify it and learn how to use it</p>
         </div>
 
-        {/* Upload & Preview Interface */}
         {!result ? (
           <div className="space-y-4">
-            {/* Drag & Drop Hotzone */}
             <div
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -110,8 +104,8 @@ export default function GymClassifierPage() {
               onClick={() => fileInputRef.current?.click()}
               className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center min-h-[200px] relative overflow-hidden ${
                 isDragging
-                  ? "border-indigo-500 bg-indigo-50/50"
-                  : "border-slate-300 hover:border-indigo-400 hover:bg-slate-50/50"
+                  ? "border-emerald-500 bg-emerald-50/50"
+                  : "border-slate-300 hover:border-emerald-400 hover:bg-slate-50/50"
               }`}
             >
               <input
@@ -123,40 +117,38 @@ export default function GymClassifierPage() {
               />
               
               {previewUrl ? (
-                /* Uploaded Image Preview Frame */
                 <div className="absolute inset-0 w-full h-full p-2 bg-white">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={previewUrl}
+                  <Image
+                    fill
+                    src={previewUrl as string}
                     alt="Gym Machine Preview"
                     className="w-full h-full object-cover rounded-lg"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-slate-900/40 hover:bg-slate-900/60 transition-colors flex items-center justify-center rounded-lg opacity-0 hover:opacity-100">
                     <p className="text-xs font-semibold text-white bg-slate-900/80 px-3 py-1.5 rounded-full">Change Image</p>
                   </div>
                 </div>
               ) : (
-                /* Blank State Blueprint */
                 <>
-                  <svg className={`w-12 h-12 mb-3 text-slate-400 ${isDragging ? "text-indigo-500 scale-110" : ""} transition-transform`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-12 h-12 mb-3 text-slate-400 ${isDragging ? "text-emerald-500 scale-110" : ""} transition-transform`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   <div className="text-sm text-slate-600">
-                    <span className="font-semibold text-indigo-600">Click to upload machine photo</span> or drag it here
+                    <span className="font-semibold text-emerald-600">Click to upload machine photo</span> or drag it here
                     <p className="text-xs text-slate-400 mt-2">Supports PNG, JPG, JPEG</p>
                   </div>
                 </>
               )}
             </div>
 
-            {/* AI Classification Trigger Button */}
             <button
               onClick={handleClassify}
               disabled={!file || isAnalyzing}
               className={`w-full py-3 px-4 rounded-xl text-white font-medium shadow-md transition-all duration-150 flex items-center justify-center space-x-2 ${
                 !file || isAnalyzing
                   ? "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
-                  : "bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] shadow-indigo-600/10"
+                  : "bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] shadow-emerald-600/10"
               }`}
             >
               {isAnalyzing ? (
@@ -203,7 +195,7 @@ export default function GymClassifierPage() {
                   className={`py-1.5 px-3.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
                     copied
                       ? "bg-emerald-600 text-white shadow-sm"
-                      : "bg-indigo-50 text-indigo-600 hover:bg-indigo-100"
+                      : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
                   }`}
                 >
                   {copied ? "Copied!" : "Copy Link"}

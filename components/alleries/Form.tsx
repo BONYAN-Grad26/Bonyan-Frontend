@@ -21,7 +21,7 @@ export const AllergyForm = ({allergies,setAllergies,id,name} : AllergyFormProps)
     const [formData, setFormData] = useState({
         name,
         type: AllergenType.CRUSTACEAN,
-        severity: 'low',
+        severity:"high",
         notes: ''
     });
     

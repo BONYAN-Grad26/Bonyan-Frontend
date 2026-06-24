@@ -9,8 +9,8 @@ import { getNutrition, getWorkout } from "@/serverActions/dashboard";
 
 const DashboardPage: React.FC = async () => {
 
-  const nutrition = await getNutrition();
-  const workout = await getWorkout()
+  const nutrition = await getNutrition(); // diet-plan
+  const workout = await getWorkout()// workout plan
 
 
   return (<MainDashborad nutrition={nutrition} workout={workout} />)
