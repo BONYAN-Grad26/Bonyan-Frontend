@@ -40,7 +40,7 @@ const Instead = () => {
           </div>
 
           <Link href="/dashboard" passHref className="w-full">
-            <Button disabled={loading}  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow-xs py-6 rounded-xl transition-colors">
+            <Button onClick={()=>generationHandle()} disabled={loading}  className="w-full disabled:bg-emerald-300 bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow-xs py-6 rounded-xl transition-colors">
               <Plus className="w-5 h-5 mr-2" />
               Create Your AI Plan
             </Button>

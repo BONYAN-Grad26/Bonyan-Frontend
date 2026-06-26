@@ -25,6 +25,7 @@ export const getUserProfile = async () => {
             next: { tags: ['profile']  } // Optional: for caching and revalidation
             
         });
+
         if(response.status===404) {
             return null ;
         }
@@ -33,6 +34,7 @@ export const getUserProfile = async () => {
         if (!response.ok) {
             throw new Error(dataOfResponse.error.message);
         }
+        console.log(dataOfResponse);
 
 
         return dataOfResponse.data as HealthProfileData ;

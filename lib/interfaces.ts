@@ -30,6 +30,11 @@ export interface ResponseData {
 
 
 }
+
+export interface TempData  {
+  accessToken:string,
+  expiresIn:string
+}
 export enum DietGoal {
   LOSE_WEIGHT = "LOSE_WEIGHT",
   GAIN_MUSCLE = "GAIN_MUSCLE",

@@ -1,6 +1,6 @@
 "use server";   
 import { apiClient } from "@/configs/Axios";
-import { HealthData, HealthProfileData, OnboardingData, RegisterUserData, ResponseData } from "@/lib/interfaces";
+import { HealthData, HealthProfileData, OnboardingData, RegisterUserData, ResponseData, TempData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -43,7 +43,7 @@ export const sendOtp = async (otp:string) => {
             throw new Error("Access token not found in response");
 
         }
-        cookieStore.set('temp_token', data.data?.accessToken,
+        cookieStore.set('temp_data', JSON.stringify(data.data),
             { 
                 maxAge:  5*60, 
                 httpOnly: true,
@@ -73,10 +73,11 @@ export const logoutUser = async () => {
 
 export const createHealtheMatrix = async (data:OnboardingData) => {
     const cookieStore = await cookies();
-    const tempToken = cookieStore.get('temp_token')?.value ;
-    if(!tempToken) {
+    const tempData = cookieStore.get('temp_data')?.value  ;
+    if(!tempData) {
         throw new Error("please register before")
     }
+    const {accessToken,expiresIn } = JSON.parse(tempData) as TempData ;
 
     try {
         const healthdata: HealthData = {
@@ -96,7 +97,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
 
         const resposne = await apiClient.post('/health-profile', healthdata ,{
             headers:{
-                "Authorization" : `Bearer ${tempToken}`
+                "Authorization" : `Bearer ${accessToken}`
             }
         });
     
@@ -104,15 +105,15 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
         if(!responseData.success) {
             throw new Error(responseData.error.message || 'Failed to create health matrix');
         }
-        cookieStore.set('access_token', tempToken,
+        cookieStore.set('access_token', accessToken,
             { 
-                maxAge: 60*60*3, 
+                maxAge:60*60*3, 
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
 
             }
         ); 
-        cookieStore.delete('temp_token');
+        cookieStore.delete('temp_data');
 
 
         return responseData.data as HealthProfileData || null
@@ -137,9 +138,10 @@ export const loginUser = async (email:string,password:string) => {
             throw new Error("Access token not found in response");
         }
         const cookieStore = await cookies();
+        
         cookieStore.set('access_token', data.data?.accessToken,
             { 
-                maxAge: calcSeconds(data.data!.expiresIn), //calcSeconds(data.data.expiresIn as string),
+                maxAge: 60*60*3, //calcSeconds(data.data.expiresIn as string),
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
 
@@ -162,7 +164,7 @@ const calcSeconds = (expires_in: string): number => {
   const currentTime = new Date();
 
   const diffInSeconds = Math.floor(
-    (endTime.getTime() - currentTime.getTime()) / 1000
+    ((endTime.getTime()/1000 )- (currentTime.getTime()/1000)) 
   );
 
   return diffInSeconds;
