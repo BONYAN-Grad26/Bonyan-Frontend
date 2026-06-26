@@ -73,8 +73,8 @@ export const logoutUser = async () => {
 
 export const createHealtheMatrix = async (data:OnboardingData) => {
     const cookieStore = await cookies();
-    const accessToken = cookieStore.get('temp_token')?.value ;
-    if(!accessToken) {
+    const tempToken = cookieStore.get('temp_token')?.value ;
+    if(!tempToken) {
         throw new Error("please register before")
     }
 
@@ -96,7 +96,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
 
         const resposne = await apiClient.post('/health-profile', healthdata ,{
             headers:{
-                "Authorization" : `Bearer ${accessToken}`
+                "Authorization" : `Bearer ${tempToken}`
             }
         });
     
@@ -104,7 +104,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
         if(!responseData.success) {
             throw new Error(responseData.error.message || 'Failed to create health matrix');
         }
-        cookieStore.set('access_token', accessToken,
+        cookieStore.set('access_token', tempToken,
             { 
                 maxAge: 60*60*3, 
                 httpOnly: true,
