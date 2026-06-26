@@ -43,7 +43,6 @@ export const sendOtp = async (otp:string) => {
             throw new Error("Access token not found in response");
 
         }
-        cookieStore.delete('email');
         cookieStore.set('temp_token', data.data?.accessToken,
             { 
                 maxAge:  5*60, 
@@ -52,6 +51,8 @@ export const sendOtp = async (otp:string) => {
 
             }
         ); 
+        cookieStore.delete('email');
+
 
     } catch (error) {
         console.error("Error during otp:", error);
@@ -103,7 +104,6 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
         if(!responseData.success) {
             throw new Error(responseData.error.message || 'Failed to create health matrix');
         }
-        cookieStore.delete('temp_token');
         cookieStore.set('access_token', accessToken,
             { 
                 maxAge: 60*60, 
@@ -112,6 +112,8 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
 
             }
         ); 
+        cookieStore.delete('temp_token');
+
 
         return responseData.data as HealthProfileData || null
 
