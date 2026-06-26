@@ -16,10 +16,8 @@ export const registerUser = async (userData: RegisterUserData) : Promise<Respons
                 maxAge:  60*5, 
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-
             }
         );
-
         return response.data;
 
     } catch (error:any) {
@@ -48,7 +46,7 @@ export const sendOtp = async (otp:string) => {
         cookieStore.delete('email');
         cookieStore.set('temp_token', data.data?.accessToken,
             { 
-                maxAge:  calcSeconds(data.data.expiresIn as string), 
+                maxAge:  5*60, 
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
 
@@ -108,7 +106,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
         cookieStore.delete('temp_token');
         cookieStore.set('access_token', accessToken,
             { 
-                maxAge: 60*60, //calcSeconds(data.data.expiresIn as string),
+                maxAge: 60*60, 
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
 
@@ -139,7 +137,7 @@ export const loginUser = async (email:string,password:string) => {
         const cookieStore = await cookies();
         cookieStore.set('access_token', data.data?.accessToken,
             { 
-                maxAge: 60*60, //calcSeconds(data.data.expiresIn as string),
+                maxAge: calcSeconds(data.data!.expiresIn), //calcSeconds(data.data.expiresIn as string),
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
 
@@ -158,18 +156,18 @@ export const loginUser = async (email:string,password:string) => {
     }
 }
 const calcSeconds = (expires_in: string): number => {
-    const startTime = new Date(expires_in);
-    const endTime = new Date();
+  const endTime = new Date(expires_in);
+  const currentTime = new Date();
 
-    const diffInSeconds = Math.floor(endTime.getTime() - startTime.getTime()) / 1000;
+  const diffInSeconds = Math.floor(
+    (endTime.getTime() - currentTime.getTime()) / 1000
+  );
 
-    return diffInSeconds;
-
-}
+  return diffInSeconds;
+};
 
 export const LogoutWhenStatusEqual401 = async(status:number) => {
     if(status===401) {
-    await logoutUser();
 
     revalidatePath("/", "layout");
 

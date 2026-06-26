@@ -19,7 +19,7 @@ import { steps } from '@/lib/constants';
 
 export function OnboardingWizard() {
   const [currentStep, setCurrentStep] = useState(0);
-  const params = useSearchParams();
+  //const params = useSearchParams();
   const [data, setData] = useState<OnboardingData>({
     age: 0,
     gender: Gender.MALE,

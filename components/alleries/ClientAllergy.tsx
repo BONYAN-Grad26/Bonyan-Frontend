@@ -24,7 +24,7 @@ const ClientAllergy = ({allergies2,id,name}:ClientAllergyProps) => {
               <Plus size={20} className="text-indigo-600" />
               Add New Allergy
             </h2>
-            <AllergyForm name={name} id={id} setAllergies={setAllergies} allergies={allergies} />
+            <AllergyForm  name={name} id={id} setAllergies={setAllergies} allergies={allergies} />
           </div>
 
           {/* Right Side: Allergies Grid List */}

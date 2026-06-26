@@ -29,7 +29,7 @@ export default async function ProfilePage() {
       {/* Header */}
       <div className="border-b border-border/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-start flex-wrap gap-3">
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-2">My Profile</h1>
               <p className="text-foreground/60">View and manage your health information</p>
@@ -47,7 +47,7 @@ export default async function ProfilePage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Profile Card */}
             <div className="glass rounded-2xl p-8 space-y-6">
-              <div className="flex items-center gap-6">
+              <div className="flex  justify-center sm:justify-start items-center gap-6 flex-wrap">
                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                   <User className="w-12 h-12 text-white" />
                 </div>

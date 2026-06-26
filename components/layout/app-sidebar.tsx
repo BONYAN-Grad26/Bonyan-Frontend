@@ -32,7 +32,7 @@ export function AppSidebar() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg hover:bg-accent/10 transition-colors"
+        className="md:hidden fixed  top-4 right-4 z-100 p-2 rounded-lg hover:bg-accent/10 transition-colors"
       >
         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>

@@ -75,6 +75,7 @@ export default function GymClassifierPage() {
   const copyToClipboard = () => {
     if (result?.youtubeLink) {
       navigator.clipboard.writeText(result.youtubeLink);
+      
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

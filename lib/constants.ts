@@ -1,4 +1,4 @@
-import { ActivityLevel, Allergy, ApiMealPlanResponse, NutritionData, WorkoutData } from "./interfaces";
+import { ActivityLevel, AllergenType, Allergy, ApiMealPlanResponse, NutritionData, WorkoutData } from "./interfaces";
 import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad,Workflow} from 'lucide-react';
 
 export const baseUrl = process.env.BASE_URL || 'http://localhost:8080/api';
@@ -8,9 +8,9 @@ export const machineUrl = process.env.MACHINE_URL || 'https://fitness-part.onren
 export const workoutUrl = process.env.WORKOUT_URL || 'http://localhost:8080/workout-plan'
 
 export const staticAllergies : Allergy[] = [
-    { id: '1', name: 'Penicillin', type: 'medicine', severity: 'high', notes: 'Causes severe skin rash and shortness of breath.' },
-    { id: '2', name: 'Peanuts', type: 'food', severity: 'high', notes: 'Anaphylaxis risk - requires immediate Epinephrine auto-injector.' },
-    { id: '3', name: 'Dust & Pollen', type: 'environmental', severity: 'low', notes: 'Triggers allergic rhinitis mostly during spring season.' },
+    { id: '1', name: 'Penicillin', type: AllergenType.OTHER, severity: 'high', notes: 'Causes severe skin rash and shortness of breath.' },
+    { id: '2', name: 'Peanuts', type: AllergenType.NUTS, severity: 'high', notes: 'Anaphylaxis risk - requires immediate Epinephrine auto-injector.' },
+    { id: '3', name: 'Dust & Pollen', type: AllergenType.OTHER, severity: 'low', notes: 'Triggers allergic rhinitis mostly during spring season.' },
 ]
 export const getSeverityBadge = (severity: string) => {
     switch (severity) {

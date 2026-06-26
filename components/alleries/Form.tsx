@@ -2,7 +2,6 @@
 import { AllergenType, Allergy } from '@/lib/interfaces'
 import { createAllergy } from '@/serverActions/allergy'
 import { Plus } from 'lucide-react'
-import { Allan } from 'next/font/google'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import {toast} from "react-hot-toast"
@@ -11,7 +10,8 @@ interface AllergyFormProps  {
   allergies: Allergy[] ;
   setAllergies: React.Dispatch<React.SetStateAction<Allergy[]>>;
   id:string,
-  name:string
+  name:string,
+  
 }
 
 export const AllergyForm = ({allergies,setAllergies,id,name} : AllergyFormProps) => {
@@ -19,39 +19,38 @@ export const AllergyForm = ({allergies,setAllergies,id,name} : AllergyFormProps)
     const router = useRouter();
 
     const [formData, setFormData] = useState({
-        name,
-        type: AllergenType.CRUSTACEAN,
-        severity:"high",
-        notes: ''
+      name,
+      type: AllergenType.CRUSTACEAN,
+      severity:"high",
+      notes: ''
     });
     
 
   const handleSubmit = async(e: React.SubmitEvent) => {
     e.preventDefault();
     
-    if (!formData.name.trim()) {
-      toast.error("Please enter allergy name");
-      return ;
 
-    }
     if(!formData.notes.trim()) {
       toast.error("Please enter allergy notes");
       return ;
 
     }
-    if(formData.name!=name) {
-      toast.error("please choose from ingredients")
-      router.back()
-      return
-    }
+
 
     const newAllergy: Allergy = {
-      id: Date.now().toString(),
-      name: formData.name,
+      id,
+      name,
       type: formData.type  as AllergenType ,
       severity: formData.severity as any,
       notes: formData.notes
     };
+
+    const existAllergy = allergies.find((allergy)=>allergy.name===name);
+    if(existAllergy) {
+      toast.error("allergy is already exists");
+      router.back();
+      return
+    }
 
     try {
       setLoading(true);
@@ -67,7 +66,7 @@ export const AllergyForm = ({allergies,setAllergies,id,name} : AllergyFormProps)
 
     } finally {
       setLoading(false);
-      setFormData({ name:"", type: AllergenType.CRUSTACEAN, severity: 'low', notes: '' }); // Reset Form
+      setFormData({ name, type: AllergenType.CRUSTACEAN, severity: 'low', notes: '' }); // Reset Form
     }
 
 
@@ -84,8 +83,9 @@ export const AllergyForm = ({allergies,setAllergies,id,name} : AllergyFormProps)
                   type="text"
                   required
                   placeholder="e.g., Penicillin, Peanuts, Gluten"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  value={name}
+                  readOnly
+                  //onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm"
                 />
               </div>
