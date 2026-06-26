@@ -107,7 +107,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
         }
         cookieStore.set('access_token', accessToken,
             { 
-                maxAge:60*60*3, 
+                maxAge:calcSeconds(expiresIn), 
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
 
@@ -138,10 +138,12 @@ export const loginUser = async (email:string,password:string) => {
             throw new Error("Access token not found in response");
         }
         const cookieStore = await cookies();
+        const maxAge=calcSeconds(data.data.expiresIn);
+        console.log({maxAge})
         
         cookieStore.set('access_token', data.data?.accessToken,
             { 
-                maxAge: 60*60*3, //calcSeconds(data.data.expiresIn as string),
+                maxAge, //calcSeconds(data.data.expiresIn as string),
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
 
@@ -159,22 +161,17 @@ export const loginUser = async (email:string,password:string) => {
         throw new Error(errorMessage || 'An error occurred during login');
     }
 }
-const calcSeconds = (expires_in: string): number => {
-  const endTime = new Date(expires_in);
-  const currentTime = new Date();
-
-  const diffInSeconds = Math.floor(
-    ((endTime.getTime()/1000 )- (currentTime.getTime()/1000)) 
-  );
-
-  return diffInSeconds;
-};
+const calcSeconds = (expires_in:string) => {
+ const diff = Math.abs(new Date(expires_in).getTime() - Date.now());
+ return Math.floor(diff / 1000);
+}
 
 export const LogoutWhenStatusEqual401 = async(status:number) => {
     if(status===401) {
 
-    revalidatePath("/", "layout");
+    const cookieStore = await cookies();
 
+    cookieStore.delete("access_token");
     redirect("/");
     }
 
