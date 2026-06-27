@@ -1,7 +1,11 @@
+"use server"
 import { apiClient } from "@/configs/Axios";
 import { baseUrl } from "@/lib/constants";
 import { ApiMealPlanResponse, ResponseData } from "@/lib/interfaces";
 import { cookies } from "next/headers";
+import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { redirect } from "next/navigation";
+import { updateTag } from "next/cache";
 
 export const getWeeklyPlans = async() => {
     const cookieStore = await cookies();
@@ -18,11 +22,15 @@ export const getWeeklyPlans = async() => {
             'Authorization': `Bearer ${accessToken}`
         },
         cache:"force-cache",
-        next: { tags: ['weekly-diet-plan','diet-plans']  } 
+        next: { tags: ['weekly-diet-plan','diet-plans','commen-tag']  } 
 
     })
 
-
+    if(response.status===401) {
+        await refreshToken();
+        updateTag('commen-tag')
+        redirect("/")
+    }
     if(response.status===404) {
         return []
     }

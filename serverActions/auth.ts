@@ -1,7 +1,9 @@
 "use server";   
 import { apiClient } from "@/configs/Axios";
+import { baseUrl } from "@/lib/constants";
 import { HealthData, HealthProfileData, OnboardingData, RegisterUserData, ResponseData, TempData } from "@/lib/interfaces";
 import axios from "axios";
+import { th } from "date-fns/locale";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -123,7 +125,7 @@ export const createHealtheMatrix = async (data:OnboardingData) => {
     } catch (error) { 
         console.error(error);
         const errorMessage = axios.isAxiosError(error) ? error.response?.data?.error.message : null;
-        
+
         throw new Error(errorMessage || 'An error occurred during creating health-matrix');
     }
 
@@ -166,14 +168,57 @@ const calcSeconds = (expires_in:string) => {
  return Math.floor(diff / 1000);
 }
 
-export const LogoutWhenStatusEqual401 = async(status:number) => {
-    if(status===401) {
+export const refreshToken = async()=> {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get('access_token')?.value;
+
+    if(!accessToken) {
+        throw new Error("Access token not found");
+    }
+    try {
+        const response = await apiClient.post(`${baseUrl}/auth/refresh-token`,null,{
+            headers:{
+                "Authorization":`Bearer ${accessToken}`
+            }
+        })
+        const responseData = response.data as ResponseData;
+        const tempData = responseData.data as TempData;
+        const {accessToken:newAccessToken,expiresIn} = tempData;
+
+        if(!newAccessToken) {
+            throw new Error("access token not found")
+        }
+        const maxAge = calcSeconds(expiresIn);
+        
+        cookieStore.set('access_token', newAccessToken,
+            { 
+                maxAge, 
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+
+            }
+        ); 
+        return newAccessToken
+
+        
+
+        
+
+    } catch (error) {
+        LogoutWhenStatusEqual401();
+
+    }
+}
+
+export const LogoutWhenStatusEqual401 = async() => {
 
     const cookieStore = await cookies();
 
     cookieStore.delete("access_token");
     redirect("/");
-    }
+    
+
+
 
 
 }

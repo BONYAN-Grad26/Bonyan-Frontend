@@ -1,7 +1,10 @@
 'use server'
-import { workoutUrl } from "@/lib/constants";
+import { baseUrl, workoutUrl } from "@/lib/constants";
 import { PlanData, ResponseData } from "@/lib/interfaces";
 import { cookies } from "next/headers";
+import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { redirect } from "next/navigation";
+import { updateTag } from "next/cache";
 
 export const getWeeklyWorkout = async()=> {
     const cookieStore = await cookies();
@@ -10,7 +13,7 @@ export const getWeeklyWorkout = async()=> {
         throw new Error("Access token not found");
     }
 
-    const url = `${workoutUrl}/user/me`;
+    const url = `${baseUrl}/workout-plan/user/me`;
     const response = await fetch(url,{
         method:"GET",
         headers:{
@@ -18,9 +21,14 @@ export const getWeeklyWorkout = async()=> {
             'Authorization': `Bearer ${accessToken}`
         },
         cache:"force-cache",
-        next:{tags:['workout-plans']}
+        next:{tags:['workout-plans','commen-tag']}
 
     });
+    if(response.status===401) {
+        await refreshToken();
+        updateTag('commen-tag')
+        redirect("/")
+    }
     if(response.status===404) {
         return null
     }
@@ -32,3 +40,4 @@ export const getWeeklyWorkout = async()=> {
 
 
 }
+

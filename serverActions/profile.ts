@@ -5,6 +5,8 @@ import { HealthData, HealthProfileData, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidateTag, updateTag } from "next/cache";
 import { cookies } from "next/headers";
+import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { redirect } from "next/navigation";
 
 export const getUserProfile = async () => { 
     const cookieStore = await cookies();
@@ -22,10 +24,14 @@ export const getUserProfile = async () => {
                 'Authorization': `Bearer ${accessToken}`
             },
             cache:"force-cache",
-            next: { tags: ['profile']  } // Optional: for caching and revalidation
+            next: { tags: ['profile','commen-tag']  } // Optional: for caching and revalidation
             
         });
-
+        if(response.status===401) {
+            await refreshToken();
+            updateTag('commen-tag')
+            redirect("/")
+        }
         if(response.status===404) {
             return null ;
         }
@@ -41,6 +47,7 @@ export const getUserProfile = async () => {
 
     } catch (error) { 
         if(axios.isAxiosError(error)) {
+
             const message = error.response?.data.error.message || 'something went wrong' ;
             throw new Error(message);
 
@@ -73,6 +80,7 @@ export const editProfile = async(id:string,formData:HealthData) => {
     } catch (error: unknown) {
 
     if (axios.isAxiosError(error)) {
+
     throw new Error(
         error.response?.data?.error?.message ||
         error.message ||

@@ -1,4 +1,5 @@
 import IngredientsPage from '@/components/ingredients/MainPage'
+import { getCart } from '@/serverActions/cart';
 import { getIngredients } from '@/serverActions/ingredients';
 
 interface PageProps {
@@ -12,11 +13,12 @@ const page = async ({searchParams}:PageProps) => {
     }
 
     const ingredients = await getIngredients(+currentPage);
+    const cart = await getCart();
 
 
 
   return (
-    <IngredientsPage ingredients={ingredients} currentPage={+currentPage} />
+    <IngredientsPage cart={cart}  ingredients={ingredients} currentPage={+currentPage} />
   )
 }
 

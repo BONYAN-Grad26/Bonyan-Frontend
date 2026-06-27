@@ -5,6 +5,8 @@ import { AllergenType, Allergy, AllergyFromServer, ResponseData } from "@/lib/in
 import axios from "axios";
 import { revalidateTag, updateTag } from "next/cache";
 import { cookies} from "next/headers";
+import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { redirect } from "next/navigation";
 
 
 export const createAllergy = async(allergy:Allergy,id:string) => {
@@ -45,9 +47,10 @@ export const createAllergy = async(allergy:Allergy,id:string) => {
 
 
     } catch (error:any) {
-        console.error(error.response?.data);
         if(axios.isAxiosError(error)) {
+
             const data = error.response?.data as ResponseData ;
+
             throw new Error(data.error.message || "Request failed");
 
 
@@ -61,7 +64,7 @@ export const createAllergy = async(allergy:Allergy,id:string) => {
 
 }
 
-export const getAllAllergies= async() : Promise<Allergy[]> => {
+export const getAllAllergies= async() : Promise<Allergy[] | {message:string}> => {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('access_token')?.value;
 
@@ -75,13 +78,18 @@ export const getAllAllergies= async() : Promise<Allergy[]> => {
                 'Authorization': `Bearer ${accessToken}`
             },
             cache:'force-cache',
-            next: { tags: ['allergies'] } // Optional: for caching and revalidation
+            next: { tags: ['allergies','commen-tag'] } // Optional: for caching and revalidation
             
         }) ;
-
+        if(response.status===401) {
+            await refreshToken();
+            updateTag('commen-tag')
+            redirect("/")
+        }
         if(response.status===404) {
             return [];
         }
+
         const responseData = await response.json() as ResponseData  ;
         if (!response.ok) {
             throw new Error(`Error fetching user allergies: ${responseData.error.message}`);
@@ -123,6 +131,7 @@ export const deleteAllergy = async (id:string) => {
     } catch(error:any) {
         console.error(error)
         if(!axios.isAxiosError(error)) {
+
             const data = error.response?.data as ResponseData ;
             throw new Error(data.error.message || "Request failed");
 

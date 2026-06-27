@@ -65,7 +65,9 @@ export function AppSidebar() {
         <nav className="flex-1 px-4 py-6 space-y-2">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+            const x = item.href.split('?')[0];
+            const isActive = pathname.startsWith(item.href) || pathname.startsWith(x)  || pathname === item.href;
+            console.log({isActive ,pathname,href:item.href})
 
             return (
               <Link

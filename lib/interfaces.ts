@@ -171,11 +171,11 @@ export enum AllergenType {
 }
 
 
-export interface Ingredient {
+export interface IngredientData {
   ingredientId: number;
   ingredientName: string;
   quantity: number;
-  measurementUnit: string;
+  measurementUnit: string; 
 }
 
 export interface Meal {
@@ -186,7 +186,7 @@ export interface Meal {
   preparationTime: number;
   preparationInstructions: string;
   order: number;
-  ingredients: Array<Ingredient>;
+  ingredients: Array<IngredientData>;
 }
 
 export interface NutritionData {
@@ -221,6 +221,8 @@ export interface WorkoutData {
 export interface Ingredient {
   id: number;
   name: string;
+  imageUrl:string,
+  price:number
 }
 
 export interface MachineData {
@@ -229,12 +231,6 @@ export interface MachineData {
   "video_url": string
 }
 
-export interface IngredientData {
-  ingredientId: number;
-  ingredientName: string;
-  quantity: number;
-  measurementUnit: string; // مثل "g" أو "ml" إلخ
-}
 
 export interface Meal {
   id: number;
@@ -250,15 +246,15 @@ export interface Meal {
 export interface DayPlan {
 
   id: number;
-  date: string;                     // صيغة تاريخ "YYYY-MM-DD"
-  dayOfWeek: number;                // int32 يمثل ترتيب اليوم
-  targetCalories: number;           // double
-  targetProtein: number;            // double
-  targetCarbs: number;              // double
-  targetFat: number;                // double
-  targetFiber: number;              // double
-  targetSugar: number;              // double
-  waterGoal: number;                // double
+  date: string;                     
+  dayOfWeek: number;                
+  targetCalories: number;           
+  targetProtein: number;            
+  targetCarbs: number;              
+  targetFat: number;                
+  targetFiber: number;              
+  targetSugar: number;              
+  waterGoal: number;                
   aiDailyTips: string ;
   meals: Meal[];
 }
@@ -309,3 +305,11 @@ export interface PlanData {
 
 
 
+export interface CartItem {
+  id:number;
+  ingredientId:number;
+  ingredientName:string;
+  ingredientImgUrl:string;
+  quantity:number;
+  price:number
+}

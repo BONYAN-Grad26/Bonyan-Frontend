@@ -5,6 +5,8 @@ import { NutritionData, ResponseData, WorkoutData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidateTag, updateTag } from "next/cache";
 import { cookies, headers } from "next/headers";
+import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { redirect } from "next/navigation";
 
 
 export const getNutrition = async () => {
@@ -22,16 +24,20 @@ export const getNutrition = async () => {
         },
         cache:"force-cache",
         next:{
-            tags:['diet-plans']
+            tags:['diet-plans','commen-tag']
         }
             
     });
+    if(response.status===401) {
+        await refreshToken();
+        updateTag('commen-tag')
+        redirect("/")
+    }
     if(response.status===404) {
         return null
     }  
 
     const responseData = await response.json() as ResponseData;
-    console.log({response})
 
     if (!response.ok){
         throw new Error(responseData.error.message)
@@ -66,6 +72,7 @@ export const generateNutrition = async()=> {
 
     } catch(error:any) {
         if(axios.isAxiosError(error)) {
+
             const message = error.response?.data.error.message ;
             throw new Error(message || "something went wrong in server");
         }
@@ -83,7 +90,7 @@ export const getWorkout = async () => {
         throw new Error("Access token not found");
     }
 
-    const response = await fetch(`${workoutUrl}/today`,{
+    const response = await fetch(`${baseUrl}/workout-plan/today`,{
         method:'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -91,10 +98,15 @@ export const getWorkout = async () => {
         },
         cache:"force-cache",
         next:{
-            tags:['workout-plans']
+            tags:['workout-plans','commen-tag']
         }
             
     });
+    if(response.status===401) {
+        await refreshToken();
+        updateTag('commen-tag')
+        redirect("/")
+    }
     if(response.status===404) {
         return null
     }  
@@ -118,7 +130,7 @@ export const generateWorkout = async()=> {
         throw new Error("Access token not found");
     }
     try {
-        const response = await axios.post(`${workoutUrl}/generate-weekly`,null,{
+        const response = await apiClient.post(`/workout-plan/generate-weekly`,null,{
             headers:{
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -134,6 +146,7 @@ export const generateWorkout = async()=> {
         console.error(error);
 
         if(axios.isAxiosError(error)) {
+
             const message = error.response?.data.error.message ;
             throw new Error(message || "something went wrong in server");
         }
