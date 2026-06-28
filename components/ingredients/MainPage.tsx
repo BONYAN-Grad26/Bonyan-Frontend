@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import DeleteModal from "../layout/Deletemodel";
 
 interface IngredientsPageProps {
   ingredients: Ingredient[];
@@ -16,7 +17,8 @@ interface IngredientsPageProps {
 
 export default function IngredientsPage({ cart, ingredients, currentPage }: IngredientsPageProps) {
   const router = useRouter();
-  
+  const [isOpen,setIsOpen] = useState(false);
+  const [item,setItem] = useState<CartItem | null>(null)
   const [addingToCart, setAddingToCart] = useState({
     id: -1,
     loading: false
@@ -54,7 +56,9 @@ export default function IngredientsPage({ cart, ingredients, currentPage }: Ingr
       setAddingToCart({ id: -1, loading: false });
     }
   };
-  const handleRemoveFromCart = async(e: React.MouseEvent,cartItem:CartItem)=> {
+  
+  const handleRemoveFromCart = async(cartItem:CartItem)=> {
+
     try {
       setRemovingFromCart({id:cartItem.ingredientId,loading:true})
 
@@ -66,13 +70,16 @@ export default function IngredientsPage({ cart, ingredients, currentPage }: Ingr
         toast.error(error.message || "Something went wrong");
 
     } finally {
-      setUpdatingItem({id:-1,loading:false})
+      setRemovingFromCart({id:-1,loading:false})
+      setIsOpen(false)
 
     }
 
   }
+    
 
   const handleIncreaseQuantity = async(e: React.MouseEvent,cartItem:CartItem)=> {
+    e.preventDefault();
 
     try {
       setUpdatingItem({id:cartItem.ingredientId,loading:true})
@@ -95,6 +102,14 @@ export default function IngredientsPage({ cart, ingredients, currentPage }: Ingr
   
 
   return (
+    <>
+    <DeleteModal isOpen={isOpen} onClose={()=>setIsOpen(false)} loading={removingFromCart.loading} onConfirm={()=> {
+      if(item) {
+        handleRemoveFromCart(item);
+      }
+    }} />
+
+
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-gray-50 to-emerald-50/20 p-6 md:p-12 text-slate-800 antialiased selection:bg-emerald-100 selection:text-emerald-900">
       <div className="max-w-6xl mx-auto">
         
@@ -184,8 +199,12 @@ export default function IngredientsPage({ cart, ingredients, currentPage }: Ingr
                         <div className="flex-[2] flex items-center justify-between bg-slate-50 border border-slate-200/60 p-1 rounded-2xl shadow-inner h-[48px] animate-scale-up">
                           <button
                             disabled={removingFromCart.id===ingredient.id && removingFromCart.loading}
-                            onClick={(e) => handleRemoveFromCart(e,existingItem)}
-                            className="w-10 h-10 rounded-xl cursor-pointer bg-white hover:bg-rose-50 border border-slate-200 text-rose-500 hover:text-rose-600 flex items-center justify-center transition-colors shadow-sm active:scale-90"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setIsOpen(true);
+                              setItem(existingItem);
+                            }}
+                            className="w-10 h-10 rounded-xl cursor-pointer bg-white disabled:cursor-not-allowed hover:bg-rose-50 border border-slate-200 text-rose-500 hover:text-rose-600 flex items-center justify-center transition-colors shadow-sm active:scale-90"
                             title="Remove from Cart"
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -194,14 +213,14 @@ export default function IngredientsPage({ cart, ingredients, currentPage }: Ingr
                           </button>
 
                           <span className="font-mono font-black text-sm text-slate-800 select-none bg-white px-3 py-1 rounded-lg border border-slate-100 shadow-sm">
-                            Qty: 1
+                            Qty:{existingItem.quantity}
                           </span>
 
                           <button
                             disabled={updatingItem.id===ingredient.id && updatingItem.loading}
 
                             onClick={(e) => handleIncreaseQuantity(e,existingItem)}
-                            className="w-10 h-10 rounded-xl  cursor-pointer text-slate-400 flex items-center justify-center bg-white hover:bg-green-50 border  "
+                            className="w-10 h-10 rounded-xl  cursor-pointer disabled:cursor-not-allowed text-slate-400 flex items-center justify-center bg-white hover:bg-green-50 border  "
                           >
                             +
                           </button>
@@ -279,5 +298,6 @@ export default function IngredientsPage({ cart, ingredients, currentPage }: Ingr
 
       </div>
     </div>
+    </>
   );
 }

@@ -5,7 +5,7 @@ import { HealthData, HealthProfileData, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidateTag, updateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { LogoutWhenStatusEqual401, refreshToken, refreshTokenAndRedirct } from "./auth";
 import { redirect } from "next/navigation";
 
 export const getUserProfile = async () => { 
@@ -28,9 +28,8 @@ export const getUserProfile = async () => {
             
         });
         if(response.status===401) {
-            await refreshToken();
-            updateTag('commen-tag')
-            redirect("/")
+        await refreshTokenAndRedirct("/profile")
+
         }
         if(response.status===404) {
             return null ;

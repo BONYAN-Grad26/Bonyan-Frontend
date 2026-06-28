@@ -1,5 +1,5 @@
 import { ActivityLevel, AllergenType, Allergy, ApiMealPlanResponse, NutritionData, WorkoutData } from "./interfaces";
-import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad,Workflow} from 'lucide-react';
+import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad,Workflow ,ShoppingCart} from 'lucide-react';
 
 export const baseUrl = process.env.BASE_URL || 'http://localhost:8080/api';
 
@@ -26,6 +26,7 @@ export const navItems = [
   { label: 'Workouts', href: '/workouts', icon: Dumbbell },
   { label :"ingredients" ,href :"/ingredients?currentPage=1" , icon:Salad},
   {label:"Machine Classifier", href:"/machine-classfier", icon : Workflow},
+  {label:'Cart',href:"/cart" ,icon:ShoppingCart},
   { label: 'Profile', href: '/profile', icon: User },
   { label: 'Settings', href: '/settings', icon: Settings },
 ];

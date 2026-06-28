@@ -5,7 +5,7 @@ import { CartItem, Ingredient, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
 import { updateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { refreshToken } from "./auth";
+import { refreshToken, refreshTokenAndRedirct } from "./auth";
 import { redirect } from "next/navigation";
 
 
@@ -53,16 +53,15 @@ export const getCart = async() : Promise<CartItem[]>=>  {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
-            cache:'force-cache',
+            cache:"no-cache",
             next: { tags: ['cart','commen-tag'] } // Optional: for caching and revalidation
             
         });
         if(response.status===401) {
-            await refreshToken();
-            updateTag('commen-tag')
-            redirect("/")
+
+            await refreshTokenAndRedirct("/cart")
         }
-        if(response.status===404) {
+        if(response.status === 404) {
             return []
         }
         const responseData = await response.json() as ResponseData;
@@ -82,6 +81,7 @@ export const modifyCartItem = async(cartId:number,quantity:number) => {
         if(!accessToken) {
             throw new Error("Access token not found");
         }
+        console.log({cartId,quantity})
 
         const response = await apiClient.patch(`${baseUrl}/cart/${cartId}?quantity=${quantity}`,null,{
             headers:{

@@ -16,7 +16,6 @@ const page = async () => {
     );
   }
 
-  // في حالة البيانات موجودة بنجاح
   return (
     <WorkoutsPage planData={planData} />
   )

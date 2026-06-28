@@ -5,7 +5,7 @@ import { AllergenType, Allergy, AllergyFromServer, ResponseData } from "@/lib/in
 import axios from "axios";
 import { revalidateTag, updateTag } from "next/cache";
 import { cookies} from "next/headers";
-import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { LogoutWhenStatusEqual401, refreshToken, refreshTokenAndRedirct } from "./auth";
 import { redirect } from "next/navigation";
 
 
@@ -22,7 +22,6 @@ export const createAllergy = async(allergy:Allergy,id:string) => {
             description: allergy.notes,
             type:allergy.type,
             ingredientId: Number(id)
-
         },
         {
             headers:{
@@ -82,9 +81,7 @@ export const getAllAllergies= async() : Promise<Allergy[] | {message:string}> =>
             
         }) ;
         if(response.status===401) {
-            await refreshToken();
-            updateTag('commen-tag')
-            redirect("/")
+            await refreshTokenAndRedirct("/allergy")
         }
         if(response.status===404) {
             return [];

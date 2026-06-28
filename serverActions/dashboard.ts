@@ -5,7 +5,7 @@ import { NutritionData, ResponseData, WorkoutData } from "@/lib/interfaces";
 import axios from "axios";
 import { revalidateTag, updateTag } from "next/cache";
 import { cookies, headers } from "next/headers";
-import { LogoutWhenStatusEqual401, refreshToken } from "./auth";
+import { LogoutWhenStatusEqual401, refreshToken, refreshTokenAndRedirct } from "./auth";
 import { redirect } from "next/navigation";
 
 
@@ -29,9 +29,9 @@ export const getNutrition = async () => {
             
     });
     if(response.status===401) {
-        await refreshToken();
-        updateTag('commen-tag')
-        redirect("/")
+
+        await refreshTokenAndRedirct("/dashboard")
+        
     }
     if(response.status===404) {
         return null
@@ -103,9 +103,8 @@ export const getWorkout = async () => {
             
     });
     if(response.status===401) {
-        await refreshToken();
-        updateTag('commen-tag')
-        redirect("/")
+        await refreshTokenAndRedirct("/dashboard")
+
     }
     if(response.status===404) {
         return null
@@ -118,8 +117,6 @@ export const getWorkout = async () => {
 
     return responseData.data as WorkoutData
 
-
-    
 }
 
 export const generateWorkout = async()=> {

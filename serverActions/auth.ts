@@ -3,8 +3,7 @@ import { apiClient } from "@/configs/Axios";
 import { baseUrl } from "@/lib/constants";
 import { HealthData, HealthProfileData, OnboardingData, RegisterUserData, ResponseData, TempData } from "@/lib/interfaces";
 import axios from "axios";
-import { th } from "date-fns/locale";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -141,7 +140,6 @@ export const loginUser = async (email:string,password:string) => {
         }
         const cookieStore = await cookies();
         const maxAge=calcSeconds(data.data.expiresIn);
-        console.log({maxAge})
         
         cookieStore.set('access_token', data.data?.accessToken,
             { 
@@ -220,5 +218,13 @@ export const LogoutWhenStatusEqual401 = async() => {
 
 
 
+
+}
+
+export const refreshTokenAndRedirct = async(path:string)=> {
+    await  refreshToken()
+    revalidatePath(path)
+    redirect(path)
+    
 
 }
