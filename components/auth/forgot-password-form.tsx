@@ -10,83 +10,96 @@ export function ForgotPasswordForm() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
-    // TODO: Handle forgot password
   };
 
   if (submitted) {
     return (
-      <div className="space-y-6 text-center">
+      <div className="space-y-6 text-center animate-in fade-in duration-300">
+        {/* Success Icon Container - طابع صحي ناعم */}
         <div className="flex justify-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-            <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+          <div className="w-16 h-16 rounded-full bg-sky-500/10 text-sky-500 border border-sky-500/20 flex items-center justify-center">
+            <CheckCircle2 className="w-8 h-8" />
           </div>
         </div>
+        
         <div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">Check Your Email</h2>
-          <p className="text-foreground/60">
-            We&apos;ve sent a password reset link to {email}. Click the link in the email to reset your password.
+          <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight mb-2">Check Your Email</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            We&apos;ve sent a password reset link to <span className="font-semibold text-slate-800 dark:text-slate-200">{email}</span>. Click the link in the email to reset your password.
           </p>
         </div>
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
-          <p className="text-sm text-blue-800 dark:text-blue-300">
+
+        {/* Tip Container - معتمد على طابع الـ Sky الخفيف */}
+        <div className="bg-sky-500/5 border border-sky-500/10 rounded-xl p-4">
+          <p className="text-xs text-sky-600 dark:text-sky-400 font-medium leading-relaxed">
             <strong>Tip:</strong> The link will expire in 24 hours. If you don&apos;t receive the email, check your spam folder.
           </p>
         </div>
+
+        {/* Action Button */}
         <Button
           onClick={() => {
             setSubmitted(false);
             setEmail('');
           }}
           variant="outline"
-          className="w-full"
+          className="w-full h-11 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 transition-all rounded-xl text-sm font-medium cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Login
+          Try another email
         </Button>
-        <Link href="/auth/login" className="text-primary hover:text-primary/90 font-medium text-sm">
-          Return to sign in
-        </Link>
+        
+        <div className="block pt-2">
+          <Link href="/auth/login" className="text-sky-500 hover:text-sky-600 font-semibold text-sm transition-colors">
+            Return to sign in
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5 animate-in fade-in duration-300">
       {/* Email Field */}
       <div className="space-y-2">
-        <label className="text-sm font-medium text-foreground">Email Address</label>
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Email Address</label>
         <div className="relative">
-          <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
+          <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
           <Input
             type="email"
-            placeholder="you@example.com"
+            placeholder="name@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="pl-10 h-11"
+            className="pl-10 h-11 rounded-xl bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-sky-500/20"
             required
           />
         </div>
-        <p className="text-sm text-foreground/60">
+        <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
           Enter the email address associated with your account and we&apos;ll send you a link to reset your password.
         </p>
       </div>
 
-      {/* Submit Button */}
-      <Button type="submit" className="w-full h-11 bg-primary hover:bg-primary/90 text-white">
+      {/* Submit Button - Forced to Sky Blue Identity Tag */}
+      <Button 
+        type="submit" 
+        className="w-full h-11 bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl transition-all shadow-xs shadow-sky-500/10 cursor-pointer mt-2"
+      >
         Send Reset Link
       </Button>
 
-      {/* Back to Login */}
-      <Link
-        href="/auth/login"
-        className="flex items-center justify-center gap-2 text-primary hover:text-primary/90 font-medium"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to Login
-      </Link>
+      {/* Back to Login Link */}
+      <div className="flex justify-center pt-2">
+        <Link
+          href="/auth/login"
+          className="flex items-center gap-2 text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 font-medium text-sm transition-colors group"
+        >
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+          Back to Login
+        </Link>
+      </div>
     </form>
   );
 }

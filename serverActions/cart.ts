@@ -59,7 +59,7 @@ export const getCart = async() : Promise<CartItem[]>=>  {
         });
         if(response.status===401) {
 
-            await refreshTokenAndRedirct("/cart")
+            //await refreshTokenAndRedirct("/cart")
         }
         if(response.status === 404) {
             return []

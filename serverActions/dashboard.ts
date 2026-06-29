@@ -30,7 +30,7 @@ export const getNutrition = async () => {
     });
     if(response.status===401) {
 
-        await refreshTokenAndRedirct("/dashboard")
+        //await refreshTokenAndRedirct("/dashboard")
         
     }
     if(response.status===404) {
@@ -103,7 +103,7 @@ export const getWorkout = async () => {
             
     });
     if(response.status===401) {
-        await refreshTokenAndRedirct("/dashboard")
+        //await refreshTokenAndRedirct("/dashboard")
 
     }
     if(response.status===404) {

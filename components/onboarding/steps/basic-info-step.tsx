@@ -1,3 +1,5 @@
+'use client';
+
 import { Input } from '@/components/ui/input';
 import { Gender, OnboardingData } from '@/lib/interfaces';
 
@@ -35,7 +37,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
               
               updateData({ age: parseInt(e.target.value) || 0 })
             }}
-            className="h-11"
+            className="h-11 bg-card border-sky-500/5 focus-visible:ring-sky-500/20"
             min={10}
             max={120}
             required
@@ -49,7 +51,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
             required
             value={data.gender}
             onChange={(e) => updateData({ gender: e.target.value as Gender })}
-            className="w-full h-11 px-4 rounded-lg border border-border bg-background text-foreground"
+            className="w-full h-11 px-4 rounded-lg border border-sky-500/5 bg-card text-foreground"
           >
             <option value={Gender.MALE}>Male</option>
             <option value={Gender.FEMALE}>Female</option>
@@ -66,7 +68,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
             placeholder="Enter your height"
             value={data.height || ''}
             onChange={(e) => updateData({ height: parseInt(e.target.value) || 0 })}
-            className="h-11"
+            className="h-11 bg-card border-sky-500/5 focus-visible:ring-sky-500/20"
             min={50}
             max={500}
             required
@@ -81,7 +83,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
             placeholder="Enter your weight"
             value={data.weight || "" }
             onChange={(e) => updateData({ weight: parseInt(e.target.value) || 0 })}
-            className="h-11"
+            className="h-11 bg-card border-sky-500/5 focus-visible:ring-sky-500/20"
             min={20}
             max={500}
             required
@@ -89,16 +91,16 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
         </div>
       </div>
 
-      {/* BMI Display */}
+      {/* BMI Display - Colors Updated to the new health identity */}
       {data.height && data.weight && (
-        <div className="glass-primary rounded-xl p-6 flex items-center justify-between">
+        <div className="bg-sky-500/5 border border-sky-500/10 rounded-xl p-6 flex items-center justify-between">
           <div>
             <p className="text-sm text-foreground/60 mb-1">Your Current BMI</p>
-            <p className="text-3xl font-bold text-primary">{calculateBMI()}</p>
+            <p className="text-3xl font-bold text-sky-500">{calculateBMI()}</p>
           </div>
           <div className="text-right">
             <p className="text-sm font-medium text-foreground mb-1">Category</p>
-            <p className="text-lg text-foreground">
+            <p className="text-lg text-sky-600 font-semibold">
               {calculateBMI() < 18.5
                 ? 'Underweight'
                 : calculateBMI() < 25

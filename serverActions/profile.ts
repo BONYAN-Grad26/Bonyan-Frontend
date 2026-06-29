@@ -28,7 +28,7 @@ export const getUserProfile = async () => {
             
         });
         if(response.status===401) {
-        await refreshTokenAndRedirct("/profile")
+        //await refreshTokenAndRedirct("/profile")
 
         }
         if(response.status===404) {

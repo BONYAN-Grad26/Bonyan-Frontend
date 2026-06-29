@@ -25,7 +25,7 @@ export const getWeeklyWorkout = async()=> {
 
     });
     if(response.status===401) {
-        await refreshTokenAndRedirct("/workout")
+        //await refreshTokenAndRedirct("/workout")
 
     }
     if(response.status===404) {

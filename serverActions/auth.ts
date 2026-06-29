@@ -178,7 +178,8 @@ export const refreshToken = async()=> {
         const response = await apiClient.post(`${baseUrl}/auth/refresh-token`,null,{
             headers:{
                 "Authorization":`Bearer ${accessToken}`
-            }
+            },
+            withCredentials:true
         })
         const responseData = response.data as ResponseData;
         const tempData = responseData.data as TempData;

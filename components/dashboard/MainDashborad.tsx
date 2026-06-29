@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Meal, NutritionData, WorkoutData } from '@/lib/interfaces';
 import MealComponent from '@/components/dashboard/Meal';
@@ -7,7 +7,8 @@ import Workout from '@/components/dashboard/Workout';
 import Nutrition from '@/components/dashboard/Nutrition';
 import AidailyTaps from '@/components/dashboard/AidailyTaps';
 import Header from '@/components/dashboard/Header';
-import { defaultNutrition } from '@/lib/constants';
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 interface MainDashboardProps {
   nutrition: NutritionData | null;
@@ -17,9 +18,14 @@ interface MainDashboardProps {
 const MainDashboard = ({ nutrition, workout }: MainDashboardProps) => {
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
   const [activeTab, setActiveTab] = useState<'nutrition' | 'workout'>('nutrition');
-
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 p-4 md:p-8 font-sans antialiased selection:bg-emerald-100">
+    <div data-aos="fade-up" className="min-h-screen bg-slate-50 text-slate-800 p-4 md:p-8 font-sans antialiased selection:bg-emerald-100">
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* --- HEADER --- */}

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const protectedRoutes = ['/dashboard','/meals','/profile','/settings','/workouts','/alleries','/ingredients'];
+const protectedRoutes = ['/dashboard','/meals','/profile','/settings','/workouts','/alleries','/ingredients','/cart'];
 
 export async function middleware(request:NextRequest) {
     
@@ -43,6 +43,8 @@ export async function middleware(request:NextRequest) {
 
 
     }
+        
+       
     return NextResponse.next();
     
 
@@ -64,6 +66,7 @@ export const config = {
         '/settings/:path*',
         '/workouts/:path*',
         '/alleries/:path*',
-        '/ingredients/:path*'
+        '/ingredients/:path*',
+        '/cart/:path*'
     ],
 }

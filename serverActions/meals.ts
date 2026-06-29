@@ -27,7 +27,7 @@ export const getWeeklyPlans = async() => {
     })
 
     if(response.status===401) {
-        await refreshTokenAndRedirct("/meals")
+        //await refreshTokenAndRedirct("/meals")
 
     }
     if(response.status===404) {

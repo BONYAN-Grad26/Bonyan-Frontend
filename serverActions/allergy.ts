@@ -80,9 +80,7 @@ export const getAllAllergies= async() : Promise<Allergy[] | {message:string}> =>
             next: { tags: ['allergies','commen-tag'] } // Optional: for caching and revalidation
             
         }) ;
-        if(response.status===401) {
-            await refreshTokenAndRedirct("/allergy")
-        }
+
         if(response.status===404) {
             return [];
         }

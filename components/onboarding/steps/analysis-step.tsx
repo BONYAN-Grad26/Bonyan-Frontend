@@ -92,10 +92,6 @@ export function AnalysisStep({ data ,setCurrentStep }: AnalysisStepProps) {
       router.refresh()
       router.replace("dashboard");
       
-
-
-
-
     }catch(error:any) {
       toast.error(error.message)
 
@@ -106,8 +102,6 @@ export function AnalysisStep({ data ,setCurrentStep }: AnalysisStepProps) {
 
   }
 
-
-
   const leanMass = data.weight * ((100 - data.fatPercentage) / 100);
   const fatMass = data.weight * (data.fatPercentage / 100);
 
@@ -115,26 +109,26 @@ export function AnalysisStep({ data ,setCurrentStep }: AnalysisStepProps) {
     <div className="space-y-6">
       <div className="text-center space-y-4 mb-8">
         <div className="flex justify-center">
-          <div className="w-16 h-16 rounded-full bg-gradient-health flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-sky-500 to-sky-400 flex items-center justify-center shadow-lg shadow-sky-500/20">
             <CheckCircle2 className="w-8 h-8 text-white" />
           </div>
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-foreground">Your AI Health Plan is Ready!</h2>
-          <p className="text-foreground/60">Based on your information, here&apos;s your personalized analysis</p>
+          <h2 className="text-3xl font-bold text-slate-900">Your AI Health Plan is Ready!</h2>
+          <p className="text-slate-500">Based on your information, here&apos;s your personalized analysis</p>
         </div>
       </div>
 
       {/* Metrics Grid */}
       <div className="grid md:grid-cols-2 gap-4">
         {/* BMI */}
-        <div className="glass-primary rounded-xl p-6 space-y-3">
+        <div className="bg-sky-50/40 border border-sky-100 rounded-xl p-6 space-y-3">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-foreground">BMI</h3>
-            <Zap className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold text-slate-800">BMI</h3>
+            <Zap className="w-5 h-5 text-sky-500" />
           </div>
-          <p className="text-4xl font-bold text-primary">{calculateBMI()}</p>
-          <p className="text-sm text-foreground/70">
+          <p className="text-4xl font-black text-sky-600 tracking-tight">{calculateBMI()}</p>
+          <p className="text-sm text-slate-600 font-medium">
             {calculateBMI() < 18.5
               ? 'Underweight - Consider gaining healthy weight'
               : calculateBMI() < 25
@@ -146,41 +140,41 @@ export function AnalysisStep({ data ,setCurrentStep }: AnalysisStepProps) {
         </div>
 
         {/* TDEE */}
-        <div className="glass-primary rounded-xl p-6 space-y-3">
+        <div className="bg-slate-50 border border-slate-200/60 rounded-xl p-6 space-y-3">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-foreground">Daily Calorie Needs</h3>
-            <TrendingUp className="w-5 h-5 text-secondary" />
+            <h3 className="font-semibold text-slate-800">Daily Calorie Needs</h3>
+            <TrendingUp className="w-5 h-5 text-slate-600" />
           </div>
-          <p className="text-4xl font-bold text-secondary">{calculateTDEE()}</p>
-          <p className="text-sm text-foreground/70">kcal/day at your current activity level</p>
+          <p className="text-4xl font-black text-slate-800 tracking-tight">{calculateTDEE()}</p>
+          <p className="text-sm text-slate-500 font-medium">kcal/day at your current activity level</p>
         </div>
       </div>
 
       {/* Body Composition */}
       {data.weight && (
-        <div className="glass rounded-xl p-6 space-y-4">
-          <h3 className="font-semibold text-foreground mb-4">Body Composition</h3>
+        <div className="border border-slate-100 bg-white rounded-xl p-6 space-y-4 shadow-sm">
+          <h3 className="font-semibold text-slate-800 mb-4">Body Composition</h3>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium text-foreground">Lean Mass</span>
-                <span className="font-semibold text-foreground">{leanMass.toFixed(1)} kg</span>
+                <span className="text-sm font-medium text-slate-600">Lean Mass</span>
+                <span className="font-semibold text-slate-800">{leanMass.toFixed(1)} kg</span>
               </div>
-              <div className="w-full h-3 bg-border rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-health"
+                  className="h-full bg-gradient-to-r from-sky-400 to-sky-500"
                   style={{ width: `${data.musclePercentage}%` }}
                 ></div>
               </div>
             </div>
             <div>
               <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium text-foreground">Fat Mass</span>
-                <span className="font-semibold text-foreground">{fatMass.toFixed(1)} kg</span>
+                <span className="text-sm font-medium text-slate-600">Fat Mass</span>
+                <span className="font-semibold text-slate-800">{fatMass.toFixed(1)} kg</span>
               </div>
-              <div className="w-full h-3 bg-border rounded-full overflow-hidden">
+              <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-nutrition"
+                  className="h-full bg-gradient-to-r from-slate-400 to-slate-500"
                   style={{ width: `${data.fatPercentage}%` }}
                 ></div>
               </div>
@@ -190,30 +184,30 @@ export function AnalysisStep({ data ,setCurrentStep }: AnalysisStepProps) {
       )}
 
       {/* AI Recommendations */}
-      <div className="glass rounded-xl p-6 space-y-4">
-        <h3 className="font-semibold text-foreground mb-4">AI Recommendations</h3>
+      <div className="border border-slate-100 bg-white rounded-xl p-6 space-y-4 shadow-sm">
+        <h3 className="font-semibold text-slate-800 mb-4">AI Recommendations</h3>
         <ul className="space-y-3">
           <li className="flex gap-3 items-start">
-            <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-foreground/70">
+            <CheckCircle2 className="w-5 h-5 text-sky-500 flex-shrink-0 mt-0.5" />
+            <span className="text-sm text-slate-600">
               Your personalized {data.dietType || 'balanced'} meal plan is ready with AI-optimized recipes
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-foreground/70">
+            <CheckCircle2 className="w-5 h-5 text-sky-500 flex-shrink-0 mt-0.5" />
+            <span className="text-sm text-slate-600">
               Daily workouts tailored to your {data.activityLevel?.replace('-', ' ')} activity level
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-foreground/70">
+            <CheckCircle2 className="w-5 h-5 text-sky-500 flex-shrink-0 mt-0.5" />
+            <span className="text-sm text-slate-600">
               All {data.allergies.length} allergies will be avoided in your meal suggestions
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-foreground/70">
+            <CheckCircle2 className="w-5 h-5 text-sky-500 flex-shrink-0 mt-0.5" />
+            <span className="text-sm text-slate-600">
               Real-time health tracking with AI insights to keep you motivated
             </span>
           </li>
@@ -222,12 +216,12 @@ export function AnalysisStep({ data ,setCurrentStep }: AnalysisStepProps) {
 
       {/* CTA Buttons */}
       <div className="space-y-3 pt-4">
-          <Button disabled={loading} onClick={handleSendingHealthMatrix}  className="w-full h-11 bg-primary hover:bg-primary/90 text-white">
+          <Button disabled={loading} onClick={handleSendingHealthMatrix}  className="w-full h-11 bg-sky-600 hover:bg-sky-700 active:bg-sky-800 text-white font-semibold rounded-xl transition-all shadow-md shadow-sky-600/10 active:scale-[0.99]">
             Go to Dashboard
             <CheckCircle2 className="w-4 h-4 ml-2" />
           </Button>
         <Link  href="/">
-          <Button disabled={loading} variant="outline" className="w-full h-11">
+          <Button disabled={loading} variant="outline" className="w-full h-11 rounded-xl border-slate-200 hover:bg-slate-50 text-slate-700 font-medium active:scale-[0.99] transition-transform">
             Back to Home
           </Button>
         </Link>

@@ -8,10 +8,17 @@ export const metadata = {
 export default function LoginPage() {
   return (
     <>
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
-        <p className="text-foreground/60">Sign in to your Bonyan account</p>
+      {/* رأس الصفحة مع ضبط التباين وعمل تباعد متناسق */}
+      <div className="text-center mb-8 space-y-1">
+        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
+          Welcome Back
+        </h1>
+        <p className="text-sm text-muted-foreground/90">
+          Sign in to your Bonyan account
+        </p>
       </div>
+      
+      {/* فورم تسجيل الدخول المحدث بالهوية اللبنية */}
       <LoginForm />
     </>
   );

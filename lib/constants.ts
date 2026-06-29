@@ -1,4 +1,4 @@
-import { ActivityLevel, AllergenType, Allergy, ApiMealPlanResponse, NutritionData, WorkoutData } from "./interfaces";
+import { ActivityLevel, AllergenType, Allergy, ApiMealPlanResponse, DietGoal, DietType, Gender, NutritionData, WorkoutData } from "./interfaces";
 import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad,Workflow ,ShoppingCart} from 'lucide-react';
 
 export const baseUrl = process.env.BASE_URL || 'http://localhost:8080/api';
@@ -293,3 +293,25 @@ export const stepsInfo = {
 }
 
 export const insteadImage =  "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=500&auto=format&fit=crop"
+
+export const profile = {
+    id: 101,
+    age: 28,
+    weightKg: 85.5,
+    heightCm: 180,
+    muscleMassKg: 38.2,
+    fatPercentage: 22.5,
+    gender: Gender.MALE,
+    activityLevel: ActivityLevel.MODERATELY_ACTIVE,
+    medicalNotes: null,
+    dietType: DietType.HIGH_PROTEIN,
+    dietGoal: DietGoal.LOSE_WEIGHT,
+    bmi: 26.4,
+    bmiCategory: "Overweight",
+    tdee: 2650,
+    fatMass: 19.2,
+    leanMass: 66.3,
+    bodyFatCategory: "Acceptable",
+    targetWeightKg: 78.0,
+    dailyCalorieTarget: 2150
+  }

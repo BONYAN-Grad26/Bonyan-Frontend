@@ -1,23 +1,31 @@
-import { Sparkles } from 'lucide-react'
-import React from 'react'
+import { Sparkles } from 'lucide-react';
+import React from 'react';
 
-interface AidailyTapsProps {
-  aiDailyTips:string
-
+interface AiDailyTipsProps {
+  aiDailyTips: string;
 }
 
-const AidailyTaps = ({aiDailyTips}:AidailyTapsProps) => {
+export const AiDailyTips = ({ aiDailyTips }: AiDailyTipsProps) => {
   return (
-          <div className="bg-emerald-50/60 border border-emerald-100 rounded-2xl p-4 flex items-start gap-3.5 shadow-xs">
-            <div className="p-2 bg-emerald-500/10 rounded-xl text-emerald-600 shrink-0">
-              <Sparkles size={18} />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-0.5">AI Health Advisor</h4>
-              <p className="text-slate-600 text-sm leading-relaxed">{aiDailyTips}</p>
-            </div>
-          </div>
-      )
-}
+    <div className="relative overflow-hidden bg-sky-500/[0.02] border border-sky-500/10 rounded-2xl p-4 flex items-start gap-3.5 transition-all duration-300 hover:border-sky-500/20">
+      {/* تأثير ضوئي خلفي ناعم يرمز للـ AI */}
+      <div className="absolute -right-6 -top-6 w-12 h-12 bg-sky-500/10 blur-xl rounded-full pointer-events-none" />
+      
+      {/* الأيقونة باللون اللبني المعتمد للمنصة */}
+      <div className="p-2 bg-sky-500/10 rounded-xl text-sky-500 shrink-0 shadow-sm shadow-sky-500/5">
+        <Sparkles size={16} className="animate-pulse" />
+      </div>
+      
+      <div className="space-y-0.5">
+        <h4 className="text-[11px] font-bold uppercase tracking-wider text-sky-500/90 select-none">
+          AI Health Advisor
+        </h4>
+        <p className="text-muted-foreground text-sm leading-relaxed font-medium">
+          {aiDailyTips}
+        </p>
+      </div>
+    </div>
+  );
+};
 
-export default AidailyTaps
+export default AiDailyTips;
