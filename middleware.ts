@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 const protectedRoutes = ['/dashboard','/meals','/profile','/settings','/workouts','/alleries','/ingredients','/cart'];
 
 export async function middleware(request:NextRequest) {
-    /*
+    
     const tempToken = request.cookies.get('temp_token')?.value
     const token = request.cookies.get('access_token')?.value;
     const email = request.cookies.get("email")?.value;
@@ -43,7 +43,7 @@ export async function middleware(request:NextRequest) {
 
 
     }
-        */
+        
     return NextResponse.next();
 
 }
