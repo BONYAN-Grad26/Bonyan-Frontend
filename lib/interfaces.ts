@@ -16,7 +16,12 @@ enum ErrorType {
     INTERNAL_SERVER_ERR,
     NONE
 }
-
+export interface Message {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
 type ErrorResonse = {
     message: string;
     type: ErrorType;
@@ -29,6 +34,11 @@ export interface ResponseData {
 
 
 
+}
+
+export interface ChatResponse {
+  response :string;
+  session_id :string
 }
 
 export interface TempData  {

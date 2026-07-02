@@ -214,3 +214,12 @@
 .ring-nutrition {
   @apply ring-2 ring-orange-200 dark:ring-orange-900;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}

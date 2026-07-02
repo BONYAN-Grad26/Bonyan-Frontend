@@ -1,5 +1,5 @@
 import { ActivityLevel, AllergenType, Allergy, ApiMealPlanResponse, DietGoal, DietType, Gender, NutritionData, WorkoutData } from "./interfaces";
-import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad,Workflow ,ShoppingCart} from 'lucide-react';
+import { LayoutDashboard, Apple, Dumbbell, User, Settings ,Ban ,Salad,Workflow ,ShoppingCart, Bot} from 'lucide-react';
 
 export const baseUrl = process.env.BASE_URL || 'http://localhost:8080/api';
 
@@ -7,6 +7,7 @@ export const machineUrl = process.env.MACHINE_URL || 'https://fitness-part.onren
 
 export const workoutUrl = process.env.WORKOUT_URL || 'http://localhost:8080/workout-plan'
 
+export const chatUrl = process.env.CHAT_URL || 'https://chatbot-wzdu.onrender.com/chat'
 export const staticAllergies : Allergy[] = [
     { id: '1', name: 'Penicillin', type: AllergenType.OTHER, severity: 'high', notes: 'Causes severe skin rash and shortness of breath.' },
     { id: '2', name: 'Peanuts', type: AllergenType.NUTS, severity: 'high', notes: 'Anaphylaxis risk - requires immediate Epinephrine auto-injector.' },
@@ -25,6 +26,7 @@ export const navItems = [
   { label: 'Meals', href: '/meals', icon: Apple },
   { label: 'Workouts', href: '/workouts', icon: Dumbbell },
   {label:"Machine Classifier", href:"/machine-classfier", icon : Workflow},
+  { label: 'Chatbot', href: '/chatbot', icon: Bot },
   { label :"ingredients" ,href :"/ingredients?currentPage=1" , icon:Salad},
   {label:'Cart',href:"/cart" ,icon:ShoppingCart},
   { label: 'Profile', href: '/profile', icon: User },
@@ -315,3 +317,8 @@ export const profile = {
     targetWeightKg: 78.0,
     dailyCalorieTarget: 2150
   }
+
+
+export function isEnglish(text: string) {
+  return /^[A-Za-z0-9\s.,!?'"():/-]+$/.test(text);
+}

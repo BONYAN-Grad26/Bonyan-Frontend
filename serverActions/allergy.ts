@@ -3,10 +3,8 @@ import { apiClient } from "@/configs/Axios"
 import { baseUrl } from "@/lib/constants";
 import { AllergenType, Allergy, AllergyFromServer, ResponseData } from "@/lib/interfaces";
 import axios from "axios";
-import { revalidateTag, updateTag } from "next/cache";
+import {  updateTag } from "next/cache";
 import { cookies} from "next/headers";
-import { logoutInserverComponent, logoutUser, LogoutWhenStatusEqual401, refreshToken, refreshTokenAndRedirct } from "./auth";
-import { redirect } from "next/navigation";
 
 
 export const createAllergy = async(allergy:Allergy,id:string) => {

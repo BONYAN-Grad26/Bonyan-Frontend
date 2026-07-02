@@ -199,11 +199,6 @@ export const refreshToken = async()=> {
             }
         ); 
         return newAccessToken
-
-        
-
-        
-
     } catch (error) {
         LogoutWhenStatusEqual401();
         throw error;
@@ -228,9 +223,4 @@ export const refreshTokenAndRedirct = async(path:string)=> {
     revalidatePath(path)
     redirect(path)
     
-}
-export const logoutInserverComponent = async() => {
-    await fetch("http://localhost:3000/api/logout", {
-    method:"POST"
-    })
 }
